@@ -53,17 +53,48 @@ const AIChat = () => {
     setInput('');
     setIsLoading(true);
 
-    // Simulate AI response
-    setTimeout(() => {
+    try {
+      const response = await fetch('http://185.136.206.76:2280/v1/chat-messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer app-O3hp1ZcrpfkgMkoUT2Aj4vBy'
+        },
+        body: JSON.stringify({
+          inputs: '',
+          query: input,
+          response_mode: "blocking",
+          conversation_id: "",
+          user: "website"
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('API yanıt vermedi');
+      }
+
+      const data = await response.json();
+      
       const aiMessage: Message = {
         id: Date.now(),
-        text: "Sorunuzu aldım. Size en iyi şekilde yardımcı olmaya çalışacağım. Hukuki konularda genel bilgi ve yönlendirme sağlayabilirim, ancak bu bilgiler resmi hukuki tavsiye yerine geçmez.",
+        text: data.answer || "Üzgünüm, şu anda cevap veremiyorum. Lütfen daha sonra tekrar deneyin.",
         sender: 'ai',
         timestamp: new Date()
       };
+
       setMessages(prev => [...prev, aiMessage]);
+    } catch (error) {
+      console.error('API Error:', error);
+      const errorMessage: Message = {
+        id: Date.now(),
+        text: "Üzgünüm, bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+        sender: 'ai',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   const handleSuggestionClick = (suggestion: string) => {
