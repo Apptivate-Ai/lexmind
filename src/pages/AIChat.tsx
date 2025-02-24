@@ -1,71 +1,34 @@
-import { useState, useRef, useEffect } from 'react';
-
-interface Message {
-  id: number;
-  text: string;
-  sender: 'user' | 'ai';
-  timestamp: Date;
-}
-
-const INITIAL_MESSAGES: Message[] = [
-  {
-    id: 1,
-    text: "Merhaba! Ben LexMind AI asistanınız. Size nasıl yardımcı olabilirim?",
-    sender: 'ai',
-    timestamp: new Date()
-  }
-];
+import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const SUGGESTIONS = [
-  "İş sözleşmesi nasıl hazırlanır?",
-  "Boşanma davası süreci nasıl işler?",
-  "Miras hukuku hakkında bilgi almak istiyorum",
-  "Şirket kurulum aşamaları nelerdir?"
+  "6098 sayılı Borçlar Kanunu'nda kira sözleşmesi ile ilgili maddeleri bul",
+  "İşçinin haksız feshinde tazminat hakları nelerdir?",
+  "Yargıtay'ın mobbing ile ilgili emsal kararlarını göster",
+  "Kiracının tahliyesi için emsal kararları incele"
 ];
 
 const AIChat = () => {
-  const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
-  const [input, setInput] = useState('');
+  const [query, setQuery] = useState('');
+  const [response, setResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const chatContainerRef = useRef<HTMLDivElement>(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!query.trim()) return;
 
-    const userMessage: Message = {
-      id: Date.now(),
-      text: input,
-      sender: 'user',
-      timestamp: new Date()
-    };
-
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
     setIsLoading(true);
+    setResponse('');
 
     try {
-      const response = await fetch('http://185.136.206.76:2280/v1/chat-messages', {
+      const response = await fetch('http://185.136.206.76:8521/api/query', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer app-O3hp1ZcrpfkgMkoUT2Aj4vBy'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          inputs: '',
-          query: input,
-          response_mode: "blocking",
-          conversation_id: "",
-          user: "website"
+          query: query
         })
       });
 
@@ -75,108 +38,105 @@ const AIChat = () => {
 
       const data = await response.json();
       
-      const aiMessage: Message = {
-        id: Date.now(),
-        text: data.answer || "Üzgünüm, şu anda cevap veremiyorum. Lütfen daha sonra tekrar deneyin.",
-        sender: 'ai',
-        timestamp: new Date()
-      };
+      console.log('Raw API Response:', data);
+      
+      // Access the nested result object
+      const result = data.result;
+      let cleanedAnswer = result.ai_response || "Üzgünüm, şu anda cevap veremiyorum. Lütfen daha sonra tekrar deneyin.";
+      
+      // Remove everything before and including </think> tag
+      cleanedAnswer = cleanedAnswer.split('</think>').pop()?.trim() || cleanedAnswer;
+      
+      console.log('Cleaned Answer:', cleanedAnswer);
 
-      setMessages(prev => [...prev, aiMessage]);
+      // Format the response with relevant laws if available
+      let formattedResponse = '';
+      if (result.relevant_laws && result.relevant_laws.length > 0) {
+        formattedResponse += '**İlgili Kanunlar:**\n\n';
+        result.relevant_laws.forEach((law: string) => {
+          formattedResponse += `- ${law}\n`;
+        });
+        formattedResponse += '\n---\n\n';
+      }
+      
+      formattedResponse += cleanedAnswer;
+      
+      setResponse(formattedResponse);
     } catch (error) {
       console.error('API Error:', error);
-      const errorMessage: Message = {
-        id: Date.now(),
-        text: "Üzgünüm, bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
-        sender: 'ai',
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, errorMessage]);
+      setResponse("Üzgünüm, bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    setInput(suggestion);
+    setQuery(suggestion);
   };
 
   return (
     <div className="chat-page">
       <div className="chat-header">
-        <h1>LexMind AI Hukuk Asistanı</h1>
+        <h1>Analiz AI</h1>
         <p>
-          Yapay zeka destekli hukuki danışmanlık sistemimiz ile sorularınızı yanıtlıyor, 
-          hukuki süreçlerinizi analiz ediyor ve size yol gösteriyoruz.
+          Hukuki açıdan değerlendirilmesini istediğiniz konuyu yazın. Yapay zeka aşağıdaki kanunlar çerçevesinde değerlendirme yapar:
+          <br /><br />
+          • İcra ve İflas Kanunu<br />
+          • İdari Yargılama Usulü Kanunu<br />
+          • İş Kanunu<br />
+          • Sendikalar ve Toplu İş Sözleşmesi Kanunu<br />
+          • Türk Borçlar Kanunu<br />
+          • Türk Ceza Kanunu<br />
+          • Türk Medeni Kanunu<br />
+          • Türk Ticaret Kanunu
         </p>
       </div>
 
-      <div className="chat-container" ref={chatContainerRef}>
-        <div className="messages-container">
-          {messages.length === 0 ? (
-            <div className="empty-chat">
-              <div className="welcome-message">
-                <h2>Hoş Geldiniz!</h2>
-                <p>Hukuki sorularınızı sormaya başlayabilirsiniz.</p>
-                <div className="suggestion-chips">
-                  {SUGGESTIONS.map((suggestion, index) => (
-                    <button 
-                      key={index}
-                      onClick={() => handleSuggestionClick(suggestion)}
-                      className="suggestion-chip"
-                    >
-                      {suggestion}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="messages-list">
-              {messages.map((message) => (
-                <div key={message.id} className={`message ${message.sender}-message`}>
-                  <div className="message-content">
-                    {message.text}
-                    <span className="timestamp">
-                      {message.timestamp.toLocaleTimeString()}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-          {isLoading && (
-            <div className="message ai-message">
-              <div className="message-content">
-                <div className="typing-indicator">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-              </div>
-            </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
-      </div>
-
-      <div className="chat-input-container">
-        <form onSubmit={handleSubmit} className="chat-input-form">
+      <div className="query-container">
+        <form onSubmit={handleSubmit} className="query-form">
           <input
             type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Mesajınızı yazın..."
-            className="chat-input"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Analiz edilecek konuyu yazın..."
+            className="query-input"
           />
           <button 
             type="submit" 
-            className="send-button"
-            disabled={isLoading || !input.trim()}
+            className="submit-button"
+            disabled={isLoading || !query.trim()}
           >
-            Gönder
+            Analiz Et
           </button>
         </form>
+
+        <div className="suggestion-chips">
+          {SUGGESTIONS.map((suggestion, index) => (
+            <button 
+              key={index}
+              onClick={() => handleSuggestionClick(suggestion)}
+              className="suggestion-chip"
+            >
+              {suggestion}
+            </button>
+          ))}
+        </div>
+
+        {isLoading && (
+          <div className="loading-container">
+            <div className="typing-indicator">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        )}
+
+        {response && !isLoading && (
+          <div className="response-container">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{response}</ReactMarkdown>
+          </div>
+        )}
       </div>
     </div>
   );

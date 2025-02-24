@@ -1,5 +1,5 @@
 #root {
-  max-width: 1280px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -144,7 +144,17 @@ body {
 }
 
 .logo {
-  flex: 0 0 200px;
+  flex: 0 0 300px;
+}
+
+.logo img {
+  height: 60px;
+  width: auto;
+  transition: opacity 0.3s ease;
+}
+
+.logo img:hover {
+  opacity: 0.9;
 }
 
 .logo a {
@@ -194,12 +204,42 @@ nav a:hover {
 
 /* Hero Section */
 .hero {
-  min-height: 100vh;
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 60px);
   display: flex;
   align-items: center;
-  padding: 120px 4rem;
-  position: relative;
-  overflow: hidden;
+  justify-content: space-between;
+  padding: 0 6rem;
+  margin-top: 5px;
+  gap: 5.6rem;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 70%;
+  padding-right: 2rem;
+}
+
+.hero-image {
+  flex: 1;
+  max-width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.hero-image img {
+  max-width: 200%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px rgba(255, 214, 19, 0.2));
+  transform: scale(2);
+  transform-origin: center center;
 }
 
 @keyframes gradientMove {
@@ -250,14 +290,9 @@ nav a:hover {
   animation: pulse 4s ease-in-out infinite;
 }
 
-.hero-content {
-  max-width: 800px;
-  animation: float 6s ease-in-out infinite;
-}
-
 .hero h1 {
-  font-size: 72px;
-  font-weight: 400;
+  font-size: 56px;
+  font-weight: 600;
   color: #FFD613;
   line-height: 1.2;
   margin-bottom: 2rem;
@@ -273,6 +308,7 @@ nav a:hover {
   line-height: 1.5;
   margin-bottom: 3rem;
   opacity: 0.8;
+  max-width: 800px;
 }
 
 .hero-buttons {
@@ -307,12 +343,12 @@ nav a:hover {
 }
 
 /* Features Section */
-.features, .how-it-works, .benefits {
+.features, .benefits {
   padding: 120px 4rem;
   text-align: center;
 }
 
-.features h2, .how-it-works h2, .benefits h2 {
+.features h2, .benefits h2 {
   font-size: 48px;
   color: #FFD613;
   margin-bottom: 3rem;
@@ -330,29 +366,42 @@ nav a:hover {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
-  padding: 2rem;
-  transition: transform 0.3s ease;
+  padding: 3rem;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .feature-card:hover {
   transform: translateY(-10px);
+  background: rgba(255, 214, 19, 0.1);
+  border-color: #FFD613;
+  box-shadow: 0 10px 30px rgba(255, 214, 19, 0.1);
 }
 
 .feature-icon {
-  font-size: 48px;
-  margin-bottom: 1.5rem;
+  font-size: 64px;
+  margin-bottom: 2rem;
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.2);
 }
 
 .feature-card h3 {
-  font-size: 24px;
-  margin-bottom: 1rem;
+  font-size: 28px;
+  margin-bottom: 1.5rem;
   color: #FFD613;
 }
 
 .feature-card p {
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.6;
-  opacity: 0.8;
+  opacity: 0.9;
+  color: #FFFFFF;
 }
 
 .steps-container {
@@ -393,14 +442,39 @@ nav a:hover {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
-  padding: 2rem;
-  text-align: left;
+  padding: 2.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.benefit-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 214, 19, 0.05);
+  border-color: rgba(255, 214, 19, 0.3);
+  box-shadow: 0 8px 24px rgba(255, 214, 19, 0.1);
+}
+
+.benefit-icon {
+  font-size: 36px;
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.benefit-card:hover .benefit-icon {
+  transform: scale(1.1);
 }
 
 .benefit-card h3 {
   font-size: 24px;
   color: #FFD613;
   margin-bottom: 1rem;
+}
+
+.benefit-card p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #FFFFFF;
+  opacity: 0.9;
 }
 
 .cta {
@@ -478,13 +552,20 @@ nav a:hover {
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
-  .features-grid, .steps-container {
-    grid-template-columns: repeat(2, 1fr);
+@media (max-width: 1200px) {
+  #root {
+    max-width: 100%;
+    padding: 1rem;
   }
-  
-  .hero h1 {
-    font-size: 56px;
+
+  .hero {
+    padding: 0 4rem;
+    gap: 2rem;
+  }
+
+  .hero-image img {
+    max-width: 150%;
+    transform: scale(1.5);
   }
 }
 
@@ -493,7 +574,7 @@ nav a:hover {
     padding: 0 2rem;
   }
   
-  .hero, .features, .how-it-works, .benefits, .cta {
+  .hero, .features, .benefits {
     padding: 80px 2rem;
   }
   
@@ -515,6 +596,11 @@ nav a:hover {
   
   nav {
     display: none;
+  }
+
+  .hero-image img {
+    max-width: 100%;
+    transform: scale(1);
   }
 }
 
@@ -544,7 +630,7 @@ nav a:hover {
 
   nav {
     position: fixed;
-    top: 80px;
+    top: 60px;
     left: 0;
     right: 0;
     transform: none;
