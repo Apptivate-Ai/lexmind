@@ -156,7 +156,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
       {
         host: '185.136.206.76',
         port: 8108,
-        protocol: 'https',
+        protocol: 'http',
       },
     ],
     cacheSearchResultsForSeconds: 2 * 60,
