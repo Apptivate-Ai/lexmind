@@ -78,7 +78,7 @@ declare module 'react-instantsearch-dom' {
     clearsQuery?: boolean;
     excludeAttributes?: string[];
     translations?: {
-      resetButtonText?: string;
+      reset?: string;
     };
   }
   export class ClearRefinements extends React.Component<ClearRefinementsProps> {}

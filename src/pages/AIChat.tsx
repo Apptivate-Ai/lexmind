@@ -22,7 +22,7 @@ const AIChat = () => {
     setResponse('');
 
     try {
-      const response = await fetch('http://185.136.206.76:8521/api/query', {
+      const response = await fetch('http://185.136.206.76:8521/query', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -42,23 +42,36 @@ const AIChat = () => {
       
       // Access the nested result object
       const result = data.result;
-      let cleanedAnswer = result.ai_response || "Üzgünüm, şu anda cevap veremiyorum. Lütfen daha sonra tekrar deneyin.";
       
-      // Remove everything before and including </think> tag
-      cleanedAnswer = cleanedAnswer.split('</think>').pop()?.trim() || cleanedAnswer;
+      // Get the main response and clean it
+      let cleanedAnswer = result.sonuç || "Üzgünüm, şu anda cevap veremiyorum. Lütfen daha sonra tekrar deneyin.";
+      
+      // Remove everything between <think> and </think> tags including the tags
+      cleanedAnswer = cleanedAnswer.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
       
       console.log('Cleaned Answer:', cleanedAnswer);
 
       // Format the response with relevant laws if available
       let formattedResponse = '';
-      if (result.relevant_laws && result.relevant_laws.length > 0) {
-        formattedResponse += '**İlgili Kanunlar:**\n\n';
-        result.relevant_laws.forEach((law: string) => {
-          formattedResponse += `- ${law}\n`;
+      
+      // Extract and display relevant law articles if available
+      if (result.değerlendirmeler && result.değerlendirmeler.length > 0) {
+        formattedResponse += '## İlgili Kanun Maddeleri\n\n';
+        
+        result.değerlendirmeler.forEach((değerlendirme: any) => {
+          if (değerlendirme.ilgili_maddeler && değerlendirme.ilgili_maddeler.length > 0) {
+            formattedResponse += `### ${değerlendirme.kanun_adi}\n`;
+            değerlendirme.ilgili_maddeler.forEach((madde: string) => {
+              formattedResponse += `- ${madde}\n`;
+            });
+            formattedResponse += '\n';
+          }
         });
-        formattedResponse += '\n---\n\n';
+        
+        formattedResponse += '---\n\n';
       }
       
+      // Add the cleaned answer
       formattedResponse += cleanedAnswer;
       
       setResponse(formattedResponse);

@@ -1,0 +1,14 @@
+# Allow all web crawlers
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://hukukarama.com/sitemap.xml
+
+# Crawl-delay for all bots
+Crawl-delay: 10
+
+# Specific paths to disallow if needed
+# Disallow: /api/
+# Disallow: /admin/
+# Disallow: /private/ 

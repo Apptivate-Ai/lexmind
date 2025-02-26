@@ -27,33 +27,30 @@ const Petition = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://185.136.206.76:2280/v1/chat-messages', {
+      const requestBody = {
+        query: `${petitionForm.subject}. ${petitionForm.description}`,
+        user_info: {
+          "Ad Soyad": petitionForm.fullName,
+          "TC Kimlik No": petitionForm.identificationNumber,
+          "Adres": petitionForm.address,
+          "Telefon": petitionForm.phone
+        }
+      };
+
+      const response = await fetch('http://185.136.206.76:8521/generate-dilekce', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer app-iTe4lHdSwrBhfXJVo6TFjh2s'
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          inputs: '',
-          query: JSON.stringify(petitionForm),
-          response_mode: "blocking",
-          conversation_id: "",
-          user: "website",
-          type: "petition"
-        })
+        body: JSON.stringify(requestBody)
       });
 
       if (!response.ok) {
         throw new Error('API yanıt vermedi');
       }
 
-      const data = await response.json();
+      const htmlContent = await response.text();
       
-      // HTML içeriğini çıkar
-      const htmlMatch = data.answer.match(/```html\s*([\s\S]*?)\s*```/);
-      let htmlContent = htmlMatch ? htmlMatch[1].trim() : '';
-      
-      // Body içeriğini al
       const bodyMatch = htmlContent.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
       const bodyContent = bodyMatch ? bodyMatch[1].trim() : htmlContent;
       
