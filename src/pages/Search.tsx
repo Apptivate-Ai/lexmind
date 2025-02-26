@@ -151,38 +151,38 @@ const DetailModal = ({
 // Set up Typesense client
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
-    apiKey: 'Lv5vBABZ9mIXI1rudI3Wx3FWLTj5kORg', // Replace with your actual API key
+    apiKey: 'Lv5vBABZ9mIXI1rudI3Wx3FWLTj5kORg',
     nodes: [
       {
         host: '185.136.206.76',
         port: 8108,
-        protocol: 'http',
+        protocol: 'https',
       },
     ],
-    cacheSearchResultsForSeconds: 2 * 60, // Cache for 2 minutes
+    cacheSearchResultsForSeconds: 2 * 60,
   },
   additionalSearchParameters: {
     query_by: 'vec',
-    exclude_fields: 'vec', // Exclude the vector field from search results
+    exclude_fields: 'vec',
   },
 });
 
 // Set up Typesense client
 const typesenseInstantsearchAdapter2 = new TypesenseInstantSearchAdapter({
   server: {
-    apiKey: 'Lv5vBABZ9mIXI1rudI3Wx3FWLTj5kORg', // Replace with your actual API key
+    apiKey: 'Lv5vBABZ9mIXI1rudI3Wx3FWLTj5kORg',
     nodes: [
       {
         host: '185.136.206.76',
         port: 8108,
-        protocol: 'http',
+        protocol: 'https',
       },
     ],
-    cacheSearchResultsForSeconds: 2 * 60, // Cache for 2 minutes
+    cacheSearchResultsForSeconds: 2 * 60,
   },
   additionalSearchParameters: {
     query_by: 'kanun_adi,kitap,kisim,bolum,ayirim,konu,madde,icerik',
-    exclude_fields: 'vec', // Exclude the vector field from search results
+    exclude_fields: 'vec',
   },
 });
 
