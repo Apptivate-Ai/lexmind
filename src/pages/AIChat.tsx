@@ -9,6 +9,25 @@ const SUGGESTIONS = [
   "Kiracının tahliyesi için emsal kararları incele"
 ];
 
+interface APIResponse {
+  task_id: string;
+  status: string;
+  result: {
+    result: string;
+    evaluations: Array<{
+      kanun_adi: string;
+      evaluation: string;
+      articles: Array<{
+        madde: string;
+        icerik: string;
+        konu: string[];
+      }>;
+    }>;
+    processing_time: number;
+  };
+  processing_time: number;
+}
+
 const AIChat = () => {
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState('');
@@ -36,44 +55,38 @@ const AIChat = () => {
         throw new Error('API yanıt vermedi');
       }
 
-      const data = await response.json();
+      const data: APIResponse = await response.json();
       
       console.log('Raw API Response:', data);
       
-      // Access the nested result object
-      const result = data.result;
-      
-      // Get the main response and clean it
-      let cleanedAnswer = result.sonuç || "Üzgünüm, şu anda cevap veremiyorum. Lütfen daha sonra tekrar deneyin.";
-      
-      // Remove everything between <think> and </think> tags including the tags
-      cleanedAnswer = cleanedAnswer.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
-      
-      console.log('Cleaned Answer:', cleanedAnswer);
+      if (data.status !== 'completed') {
+        throw new Error('API işlemi tamamlanmadı');
+      }
 
-      // Format the response with relevant laws if available
       let formattedResponse = '';
-      
-      // Extract and display relevant law articles if available
-      if (result.değerlendirmeler && result.değerlendirmeler.length > 0) {
-        formattedResponse += '## İlgili Kanun Maddeleri\n\n';
-        
-        result.değerlendirmeler.forEach((değerlendirme: any) => {
-          if (değerlendirme.ilgili_maddeler && değerlendirme.ilgili_maddeler.length > 0) {
-            formattedResponse += `### ${değerlendirme.kanun_adi}\n`;
-            değerlendirme.ilgili_maddeler.forEach((madde: string) => {
-              formattedResponse += `- ${madde}\n`;
+
+      // Add the main result first
+      formattedResponse += `${data.result.result}\n\n`;
+
+      // Add evaluations and articles if available
+      if (data.result.evaluations && data.result.evaluations.length > 0) {
+        data.result.evaluations.forEach((evaluation) => {
+          formattedResponse += `\n### ${evaluation.kanun_adi} Değerlendirmesi\n\n`;
+          formattedResponse += `${evaluation.evaluation}\n\n`;
+
+          if (evaluation.articles && evaluation.articles.length > 0) {
+            formattedResponse += `#### İlgili Maddeler\n\n`;
+            evaluation.articles.forEach((article) => {
+              formattedResponse += `##### ${article.madde}\n`;
+              if (article.konu && article.konu.length > 0) {
+                formattedResponse += `*Konu: ${article.konu.join(', ')}*\n\n`;
+              }
+              formattedResponse += `${article.icerik}\n\n`;
             });
-            formattedResponse += '\n';
           }
         });
-        
-        formattedResponse += '---\n\n';
       }
-      
-      // Add the cleaned answer
-      formattedResponse += cleanedAnswer;
-      
+
       setResponse(formattedResponse);
     } catch (error) {
       console.error('API Error:', error);
@@ -88,69 +101,129 @@ const AIChat = () => {
   };
 
   return (
-    <div className="chat-page">
-      <div className="chat-header">
-        <h1>Analiz AI</h1>
-        <p>
-          Hukuki açıdan değerlendirilmesini istediğiniz konuyu yazın. Yapay zeka aşağıdaki kanunlar çerçevesinde değerlendirme yapar:
-          <br /><br />
-          • İcra ve İflas Kanunu<br />
-          • İdari Yargılama Usulü Kanunu<br />
-          • İş Kanunu<br />
-          • Sendikalar ve Toplu İş Sözleşmesi Kanunu<br />
-          • Türk Borçlar Kanunu<br />
-          • Türk Ceza Kanunu<br />
-          • Türk Medeni Kanunu<br />
-          • Türk Ticaret Kanunu
-        </p>
+    <div className="chat-container" style={{
+      padding: '120px 2rem',
+      maxWidth: '1200px',
+      margin: '0 auto'
+    }}>
+      {/* Header */}
+      <div style={{
+        textAlign: 'center',
+        marginBottom: '3rem'
+      }}>
+        <h1 style={{
+          fontSize: '48px',
+          color: '#FFD613',
+          marginBottom: '1rem'
+        }}>Hukuki Asistan</h1>
+        <p style={{
+          fontSize: '20px',
+          color: '#FFFFFF',
+          opacity: 0.8
+        }}>Hukuki sorularınızı yapay zeka destekli asistanımıza sorabilirsiniz</p>
       </div>
 
-      <div className="query-container">
-        <form onSubmit={handleSubmit} className="query-form">
+      {/* Suggestions */}
+      <div style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '1rem',
+        justifyContent: 'center',
+        marginBottom: '2rem'
+      }}>
+        {SUGGESTIONS.map((suggestion, index) => (
+          <button
+            key={index}
+            onClick={() => handleSuggestionClick(suggestion)}
+            style={{
+              padding: '12px 24px',
+              background: 'none',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: '25px',
+              fontFamily: 'Poppins',
+              fontSize: '16px',
+              color: '#FFFFFF',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease'
+            }}
+          >
+            {suggestion}
+          </button>
+        ))}
+      </div>
+
+      {/* Chat Form */}
+      <form onSubmit={handleSubmit} style={{
+        marginBottom: '3rem'
+      }}>
+        <div style={{
+          display: 'flex',
+          gap: '1rem',
+          maxWidth: '800px',
+          margin: '0 auto'
+        }}>
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Analiz edilecek konuyu yazın..."
-            className="query-input"
+            placeholder="Hukuki sorunuzu yazın..."
+            style={{
+              flex: 1,
+              padding: '1rem 1.5rem',
+              borderRadius: '30px',
+              border: '1px solid rgba(255, 214, 19, 0.3)',
+              background: 'rgba(255, 255, 255, 0.05)',
+              color: '#FFFFFF',
+              fontSize: '16px'
+            }}
           />
-          <button 
-            type="submit" 
-            className="submit-button"
-            disabled={isLoading || !query.trim()}
+          <button
+            type="submit"
+            disabled={isLoading}
+            style={{
+              padding: '1rem 2rem',
+              borderRadius: '30px',
+              border: 'none',
+              background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
+              color: '#000000',
+              fontSize: '16px',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease'
+            }}
           >
-            Analiz Et
+            {isLoading ? 'Yanıt Hazırlanıyor...' : 'Gönder'}
           </button>
-        </form>
-
-        <div className="suggestion-chips">
-          {SUGGESTIONS.map((suggestion, index) => (
-            <button 
-              key={index}
-              onClick={() => handleSuggestionClick(suggestion)}
-              className="suggestion-chip"
-            >
-              {suggestion}
-            </button>
-          ))}
         </div>
+      </form>
 
-        {isLoading && (
-          <div className="loading-container">
-            <div className="typing-indicator">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </div>
-        )}
-
-        {response && !isLoading && (
-          <div className="response-container">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{response}</ReactMarkdown>
-          </div>
-        )}
-      </div>
+      {/* Response */}
+      {response && (
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.05)',
+          borderRadius: '20px',
+          padding: '2rem',
+          marginTop: '2rem'
+        }}>
+          <ReactMarkdown 
+            remarkPlugins={[remarkGfm]}
+            components={{
+              h1: ({node, ...props}) => <h1 style={{color: '#FFD613'}} {...props} />,
+              h2: ({node, ...props}) => <h2 style={{color: '#FFD613'}} {...props} />,
+              h3: ({node, ...props}) => <h3 style={{color: '#FFD613'}} {...props} />,
+              h4: ({node, ...props}) => <h4 style={{color: '#FFD613'}} {...props} />,
+              h5: ({node, ...props}) => <h5 style={{color: '#FFD613'}} {...props} />,
+              p: ({node, ...props}) => <p style={{color: '#FFFFFF', marginBottom: '1rem'}} {...props} />,
+              ul: ({node, ...props}) => <ul style={{color: '#FFFFFF', marginBottom: '1rem'}} {...props} />,
+              ol: ({node, ...props}) => <ol style={{color: '#FFFFFF', marginBottom: '1rem'}} {...props} />,
+              li: ({node, ...props}) => <li style={{color: '#FFFFFF'}} {...props} />,
+              em: ({node, ...props}) => <em style={{color: '#FFD613'}} {...props} />,
+              strong: ({node, ...props}) => <strong style={{color: '#FFD613'}} {...props} />,
+            }}
+          >
+            {response}
+          </ReactMarkdown>
+        </div>
+      )}
     </div>
   );
 };
