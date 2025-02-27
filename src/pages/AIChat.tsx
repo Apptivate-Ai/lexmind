@@ -71,15 +71,14 @@ const AIChat = () => {
       // Add evaluations and articles if available
       if (data.result.evaluations && data.result.evaluations.length > 0) {
         data.result.evaluations.forEach((evaluation) => {
-          formattedResponse += `\n### ${evaluation.kanun_adi} Değerlendirmesi\n\n`;
-          formattedResponse += `${evaluation.evaluation}\n\n`;
+          formattedResponse += `## ${evaluation.kanun_adi}\n\n`;
 
+          // Add articles if available
           if (evaluation.articles && evaluation.articles.length > 0) {
-            formattedResponse += `#### İlgili Maddeler\n\n`;
             evaluation.articles.forEach((article) => {
-              formattedResponse += `##### ${article.madde}\n`;
+              formattedResponse += `### ${article.madde}\n`;
               if (article.konu && article.konu.length > 0) {
-                formattedResponse += `*Konu: ${article.konu.join(', ')}*\n\n`;
+                formattedResponse += `*${article.konu.join(' > ')}*\n\n`;
               }
               formattedResponse += `${article.icerik}\n\n`;
             });
@@ -207,16 +206,16 @@ const AIChat = () => {
           <ReactMarkdown 
             remarkPlugins={[remarkGfm]}
             components={{
-              h1: ({node, ...props}) => <h1 style={{color: '#FFD613'}} {...props} />,
-              h2: ({node, ...props}) => <h2 style={{color: '#FFD613'}} {...props} />,
-              h3: ({node, ...props}) => <h3 style={{color: '#FFD613'}} {...props} />,
-              h4: ({node, ...props}) => <h4 style={{color: '#FFD613'}} {...props} />,
-              h5: ({node, ...props}) => <h5 style={{color: '#FFD613'}} {...props} />,
-              p: ({node, ...props}) => <p style={{color: '#FFFFFF', marginBottom: '1rem'}} {...props} />,
-              ul: ({node, ...props}) => <ul style={{color: '#FFFFFF', marginBottom: '1rem'}} {...props} />,
-              ol: ({node, ...props}) => <ol style={{color: '#FFFFFF', marginBottom: '1rem'}} {...props} />,
-              li: ({node, ...props}) => <li style={{color: '#FFFFFF'}} {...props} />,
-              em: ({node, ...props}) => <em style={{color: '#FFD613'}} {...props} />,
+              h1: ({node, ...props}) => <h1 style={{color: '#FFD613', marginTop: '2rem', marginBottom: '1rem'}} {...props} />,
+              h2: ({node, ...props}) => <h2 style={{color: '#FFD613', marginTop: '2rem', marginBottom: '1rem'}} {...props} />,
+              h3: ({node, ...props}) => <h3 style={{color: '#FFD613', marginTop: '1.5rem', marginBottom: '0.75rem'}} {...props} />,
+              h4: ({node, ...props}) => <h4 style={{color: '#FFD613', marginTop: '1.25rem', marginBottom: '0.5rem'}} {...props} />,
+              h5: ({node, ...props}) => <h5 style={{color: '#FFD613', marginTop: '1rem', marginBottom: '0.5rem'}} {...props} />,
+              p: ({node, ...props}) => <p style={{color: '#FFFFFF', marginBottom: '1rem', lineHeight: '1.6'}} {...props} />,
+              ul: ({node, ...props}) => <ul style={{color: '#FFFFFF', marginBottom: '1rem', paddingLeft: '1.5rem'}} {...props} />,
+              ol: ({node, ...props}) => <ol style={{color: '#FFFFFF', marginBottom: '1rem', paddingLeft: '1.5rem'}} {...props} />,
+              li: ({node, ...props}) => <li style={{color: '#FFFFFF', marginBottom: '0.5rem'}} {...props} />,
+              em: ({node, ...props}) => <em style={{color: '#FFD613', fontStyle: 'normal'}} {...props} />,
               strong: ({node, ...props}) => <strong style={{color: '#FFD613'}} {...props} />,
             }}
           >
