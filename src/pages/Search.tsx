@@ -154,9 +154,9 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
     apiKey: 'Lv5vBABZ9mIXI1rudI3Wx3FWLTj5kORg',
     nodes: [
       {
-        host: '185.136.206.76',
+        host: 'search.hukukarama.com',
         port: 8108,
-        protocol: 'http',
+        protocol: 'https',
       },
     ],
     cacheSearchResultsForSeconds: 2 * 60,
