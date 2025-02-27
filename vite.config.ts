@@ -8,12 +8,7 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 8522,
     strictPort: true,
-    hmr: {
-      clientPort: 443,
-      port: 8522,
-      protocol: 'wss',
-      host: 'hukukarama.com'
-    },
+    hmr: false, // Disable HMR completely
     proxy: {
       '/api': {
         target: 'https://hukukarama.com',

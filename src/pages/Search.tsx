@@ -155,7 +155,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
     nodes: [
       {
         host: 'search.hukukarama.com',
-        port: 8108,
+        port: 443,
         protocol: 'https',
       },
     ],
