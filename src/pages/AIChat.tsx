@@ -41,7 +41,7 @@ const AIChat = () => {
     setResponse('');
 
     try {
-      const response = await fetch('http://185.136.206.76:8521/query', {
+      const response = await fetch('https://api.hukukarama.com/query', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
