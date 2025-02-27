@@ -37,7 +37,7 @@ const Petition = () => {
         }
       };
 
-      const response = await fetch('http://api.hukukarama.com/generate-dilekce', {
+      const response = await fetch('https://api.hukukarama.com/generate-dilekce', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
