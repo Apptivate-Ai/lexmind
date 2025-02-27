@@ -2,13 +2,18 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(() => ({
   plugins: [react()],
   server: {
     host: '0.0.0.0',
     port: 8522,
     strictPort: true,
-    hmr: false, // Disable HMR completely
+    hmr: {
+      protocol: 'wss',
+      host: 'hukukarama.com',
+      port: 443,
+      clientPort: 443,
+    },
     proxy: {
       '/api': {
         target: 'https://hukukarama.com',
@@ -27,7 +32,7 @@ export default defineConfig({
     // Generate source maps for production
     sourcemap: true,
     // Minify options
-    minify: 'terser',
+    minify: 'terser' as const,
     terserOptions: {
       compress: {
         drop_console: true,
@@ -35,4 +40,4 @@ export default defineConfig({
       }
     }
   }
-})
+}))
