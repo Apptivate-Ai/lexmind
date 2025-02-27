@@ -5,13 +5,15 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    // Disable HMR in production
-    hmr: process.env.NODE_ENV === 'production' ? false : {
-      host: 'localhost'
+    host: '0.0.0.0',
+    port: 8522,
+    strictPort: true,
+    hmr: {
+      clientPort: 443,
+      port: 8522,
+      protocol: 'wss',
+      host: 'hukukarama.com'
     },
-    // Host configuration
-    host: true,
-    // Proxy configuration if needed
     proxy: {
       '/api': {
         target: 'https://hukukarama.com',
@@ -19,6 +21,11 @@ export default defineConfig({
         secure: true
       }
     }
+  },
+  preview: {
+    host: '0.0.0.0',
+    port: 8522,
+    strictPort: true
   },
   // Production build options
   build: {
