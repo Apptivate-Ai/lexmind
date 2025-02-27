@@ -15,31 +15,40 @@ import Petition from './pages/Petition';
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
     <Router>
       <div className="app">
         <header className="header">
           <div className="logo" style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-            <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
-              <img src={logo} alt="Hukuk Arama Logo" style={{ height: '250px', width: 'auto' }} />
+            <Link to="/" style={{ display: 'flex', alignItems: 'center' }} onClick={closeMenu}>
+              <img src={logo} alt="Hukuk Arama Logo" style={{ height: '60px', width: 'auto' }} />
             </Link>
           </div>
           
           <button 
-            className="mobile-menu-btn"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className={`mobile-menu-btn ${isMenuOpen ? 'open' : ''}`}
+            onClick={toggleMenu}
+            aria-label="Menüyü aç/kapat"
           >
             <span></span>
             <span></span>
             <span></span>
           </button>
 
-          <nav className={isMenuOpen ? 'open' : ''} style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
-            <Link to="/">Ana Sayfa</Link>
-            <Link to="/chat" onClick={() => window.location.href = '/chat'}>Analiz AI</Link>
-            <Link to="/search" onClick={() => window.location.href = '/search'}>Kanun Ara</Link>
-            <Link to="/petition" onClick={() => window.location.href = '/petition'}>Dilekçe Oluştur</Link>
-            <Link to="/contact" className="contact-btn">İletişim</Link>
+          <nav className={`main-nav ${isMenuOpen ? 'open' : ''}`}>
+            <Link to="/" onClick={closeMenu}>Ana Sayfa</Link>
+            <Link to="/chat" onClick={closeMenu}>Analiz AI</Link>
+            <Link to="/search" onClick={closeMenu}>Kanun Ara</Link>
+            <Link to="/petition" onClick={closeMenu}>Dilekçe Oluştur</Link>
+            <Link to="/contact" className="contact-btn" onClick={closeMenu}>İletişim</Link>
           </nav>
         </header>
 

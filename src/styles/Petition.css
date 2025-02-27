@@ -10,11 +10,13 @@
   padding: 3rem;
   background: linear-gradient(133.74deg, #2B2424 25.55%, rgba(131, 109, 109, 0) 116.47%);
   border-radius: 30px;
+  position: relative;
+  overflow: hidden;
 }
 
 .petition-header h1 {
   font-family: 'Poppins';
-  font-weight: 400;
+  font-weight: 600;
   font-size: 48px;
   line-height: 1.2;
   color: #FFD613;
@@ -27,29 +29,29 @@
   line-height: 1.5;
   color: #FFFFFF;
   opacity: 0.8;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .petition-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(500px, 1fr) minmax(600px, 1fr);
-  gap: 3rem;
+  max-width: 1200px;
+  margin: 80px auto 0;
   padding: 2rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: calc(100vh - 80px);
 }
 
-.petition-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  min-width: 500px;
+.petition-form-container {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
   padding: 2rem;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 2rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
 }
 
 .form-group {
@@ -58,168 +60,189 @@
   gap: 0.5rem;
 }
 
-.form-group label {
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-label {
   color: #FFD613;
-  font-family: 'Poppins';
-  font-size: 14px;
-}
-
-.form-group input,
-.form-group textarea {
-  padding: 16px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 214, 19, 0.3);
-  background: rgba(255, 255, 255, 0.05);
-  color: #FFFFFF;
-  font-family: 'Poppins';
   font-size: 16px;
-  width: 100%;
-  box-sizing: border-box;
+  font-weight: 500;
 }
 
-.form-group textarea {
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 214, 19, 0.2);
+  border-radius: 12px;
+  color: #FFFFFF;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.form-textarea {
   min-height: 150px;
   resize: vertical;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
   outline: none;
   border-color: #FFD613;
   box-shadow: 0 0 0 2px rgba(255, 214, 19, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2.5 4L6 7.5L9.5 4' stroke='%23FFD613' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+}
+
+.form-checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.form-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(255, 214, 19, 0.3);
+  border-radius: 4px;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.05);
+  position: relative;
+  cursor: pointer;
+}
+
+.form-checkbox:checked {
+  background: #FFD613;
+  border-color: #FFD613;
+}
+
+.form-checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #000000;
+  font-size: 14px;
+}
+
+.checkbox-label {
+  color: #FFFFFF;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .submit-button {
-  margin-top: 1rem;
+  width: 100%;
   padding: 16px;
-  border-radius: 8px;
-  border: none;
   background: linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%);
+  border: none;
+  border-radius: 12px;
   color: #000000;
-  font-family: 'Poppins';
+  font-family: 'Poppins', sans-serif;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.submit-button:hover:not(:disabled) {
-  transform: scale(1.02);
-}
-
-.submit-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.generated-petition {
-  padding: 2rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.generated-petition h2 {
-  color: #FFD613;
-  font-family: 'Poppins';
-  font-size: 24px;
-  margin-bottom: 1.5rem;
-}
-
-.petition-content {
-  color: #000000;
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  min-height: 29.7cm;
-  width: 21cm;
-  margin: 0 auto 2rem;
-  box-sizing: border-box;
-  overflow-x: auto;
-}
-
-.petition-content h2,
-.petition-content h3,
-.petition-content p,
-.petition-content div {
-  margin: 0;
-  padding: 0;
-  text-align: left;
-}
-
-.petition-content h2 {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-
-.petition-content h3 {
-  font-size: 14px;
-  font-weight: bold;
-  margin: 1rem 0;
-}
-
-.petition-content p {
-  margin-bottom: 0.5rem;
-}
-
-.petition-content ul {
-  margin: 0.5rem 0;
-  padding-left: 1.5rem;
-}
-
-.petition-content li {
-  margin-bottom: 0.25rem;
-}
-
-.petition-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
+  transition: all 0.3s ease;
   margin-top: 2rem;
 }
 
-.action-button {
-  padding: 12px 24px;
-  border-radius: 8px;
-  border: 1px solid #FFD613;
-  background: rgba(255, 214, 19, 0.1);
-  color: #FFD613;
-  font-family: 'Poppins';
+.submit-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 214, 19, 0.2);
+}
+
+.submit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.error-message {
+  color: #ff4d4d;
   font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
+  margin-top: 0.25rem;
 }
 
-.action-button:hover {
-  background: #FFD613;
-  color: #000000;
+.success-message {
+  color: #4CAF50;
+  font-size: 14px;
+  margin-top: 0.25rem;
 }
 
+/* Loading state styles */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 214, 19, 0.3);
+  border-radius: 50%;
+  border-top-color: #FFD613;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Styles */
 @media (max-width: 1200px) {
   .petition-container {
-    grid-template-columns: 1fr;
-    max-width: 900px;
+    padding: 1.5rem;
   }
 
-  .petition-form {
-    min-width: auto;
+  .petition-form-container {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .form-grid {
+    gap: 1.25rem;
+  }
+
+  .petition-header h1 {
+    font-size: 42px;
   }
 }
 
 @media (max-width: 768px) {
   .petition-container {
     padding: 1rem;
-    gap: 1.5rem;
+    margin-top: 70px;
   }
 
-  .petition-form {
-    padding: 1rem;
+  .petition-header {
+    padding: 2rem 1.5rem;
+    margin-bottom: 2rem;
   }
 
   .petition-header h1 {
@@ -230,18 +253,98 @@
     font-size: 16px;
   }
 
-  .petition-content {
-    width: 100%;
-    min-height: auto;
-    padding: 1rem;
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .petition-form-container {
+    padding: 1.25rem;
+  }
+
+  .form-label {
+    font-size: 15px;
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    padding: 12px 14px;
+    font-size: 15px;
+  }
+
+  .form-select {
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+
+  .submit-button {
+    padding: 14px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .petition-header {
+    padding: 1.5rem 1rem;
+  }
+
+  .petition-header h1 {
+    font-size: 28px;
+  }
+
+  .petition-header p {
     font-size: 14px;
   }
 
-  .petition-actions {
-    flex-direction: column;
+  .petition-form-container {
+    padding: 1rem;
   }
 
-  .action-button {
-    width: 100%;
+  .form-label {
+    font-size: 14px;
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+
+  .form-checkbox {
+    width: 18px;
+    height: 18px;
+  }
+
+  .checkbox-label {
+    font-size: 13px;
+  }
+
+  .submit-button {
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+
+  .error-message,
+  .success-message {
+    font-size: 13px;
+  }
+
+  /* Touch device optimizations */
+  .form-input,
+  .form-select,
+  .form-textarea,
+  .submit-button {
+    -webkit-appearance: none;
+    appearance: none;
+    min-height: 44px;
+  }
+
+  .form-checkbox-group {
+    min-height: 44px;
+    padding: 8px 0;
   }
 } 
