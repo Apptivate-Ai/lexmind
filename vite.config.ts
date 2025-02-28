@@ -8,14 +8,7 @@ export default defineConfig(() => ({
     host: '0.0.0.0',
     port: 8522,
     strictPort: true,
-    hmr: {
-      protocol: 'http',
-      host: 'localhost',
-      port: 8522,
-      clientPort: 8522,
-      timeout: 0,
-      overlay: false
-    },
+    hmr: false,
     watch: {
       ignored: ['**/*'],
       usePolling: false
@@ -27,7 +20,12 @@ export default defineConfig(() => ({
         secure: true,
         ws: false
       }
-    }
+    },
+    fs: {
+      strict: true,
+      allow: ['src']
+    },
+    origin: 'http://localhost:8522'
   },
   preview: {
     host: '0.0.0.0',
