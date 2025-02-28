@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import React from 'react';
 
 const SUGGESTIONS = [
   "6098 sayılı Borçlar Kanunu'nda kira sözleşmesi ile ilgili maddeleri bul",
@@ -211,7 +212,23 @@ const AIChat = () => {
               h3: ({node, ...props}) => <h3 style={{color: '#FFD613', marginTop: '1.5rem', marginBottom: '0.75rem'}} {...props} />,
               h4: ({node, ...props}) => <h4 style={{color: '#FFD613', marginTop: '1.25rem', marginBottom: '0.5rem'}} {...props} />,
               h5: ({node, ...props}) => <h5 style={{color: '#FFD613', marginTop: '1rem', marginBottom: '0.5rem'}} {...props} />,
-              p: ({node, ...props}) => <p style={{color: '#FFFFFF', marginBottom: '1rem', lineHeight: '1.6'}} {...props} />,
+              p: ({node, children, ...props}) => {
+                // Check if children contains block elements (unlikely with markdown but possible)
+                const hasBlockElements = React.Children.toArray(children).some(
+                  child => typeof child === 'object' && 
+                          (child as React.ReactElement)?.type === 'div' || 
+                          (child as React.ReactElement)?.type === 'ul' || 
+                          (child as React.ReactElement)?.type === 'ol'
+                );
+                
+                // If there are block elements, render without wrapping p
+                if (hasBlockElements) {
+                  return <>{children}</>;
+                }
+                
+                // Otherwise render normal paragraph
+                return <p style={{color: '#FFFFFF', marginBottom: '1rem', lineHeight: '1.6'}} {...props}>{children}</p>;
+              },
               ul: ({node, ...props}) => <ul style={{color: '#FFFFFF', marginBottom: '1rem', paddingLeft: '1.5rem'}} {...props} />,
               ol: ({node, ...props}) => <ol style={{color: '#FFFFFF', marginBottom: '1rem', paddingLeft: '1.5rem'}} {...props} />,
               li: ({node, ...props}) => <li style={{color: '#FFFFFF', marginBottom: '0.5rem'}} {...props} />,

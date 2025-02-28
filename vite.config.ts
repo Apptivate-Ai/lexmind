@@ -6,13 +6,11 @@ export default defineConfig(() => ({
   plugins: [react()],
   server: {
     host: '0.0.0.0',
-    port: 8522,
-    strictPort: true,
+    port: 5173,
+    strictPort: false,
     hmr: {
-      protocol: 'wss',
-      host: 'hukukarama.com',
-      port: 443,
-      clientPort: 443,
+      // Using default HMR settings (WebSocket on the same host/port as the dev server)
+      // This removes the problematic external configuration
     },
     proxy: {
       '/api': {
@@ -24,8 +22,8 @@ export default defineConfig(() => ({
   },
   preview: {
     host: '0.0.0.0',
-    port: 8522,
-    strictPort: true
+    port: 5173,
+    strictPort: false
   },
   // Production build options
   build: {

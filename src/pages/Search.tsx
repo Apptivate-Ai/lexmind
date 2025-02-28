@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 import {
   InstantSearch,
@@ -152,7 +152,27 @@ const DetailModal = ({
 // Set up Typesense client
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
-    apiKey: 'Lv5vBABZ9mIXI1rudI3Wx3FWLTj5kORg',
+    apiKey: 'xyz123',
+    nodes: [
+      {
+        host: 'search.hukukarama.com',
+        port: 443,
+        protocol: 'https',
+      },
+    ],
+    cacheSearchResultsForSeconds: 2 * 60,
+  },
+  additionalSearchParameters: {
+    query_by: 'kanun_adi,kitap,kisim,bolum,ayirim,konu,madde,icerik',
+    exclude_fields: 'vec',
+  },
+});
+
+
+// Set up Typesense client
+const typesenseInstantsearchAdapter2 = new TypesenseInstantSearchAdapter({
+  server: {
+    apiKey: 'xyz123',
     nodes: [
       {
         host: 'search.hukukarama.com',
@@ -169,9 +189,9 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
 });
 
 // Set up Typesense client
-const typesenseInstantsearchAdapter2 = new TypesenseInstantSearchAdapter({
+const typesenseInstantsearchAdapter3 = new TypesenseInstantSearchAdapter({
   server: {
-    apiKey: 'Lv5vBABZ9mIXI1rudI3Wx3FWLTj5kORg',
+    apiKey: 'xyz123',
     nodes: [
       {
         host: 'search.hukukarama.com',
@@ -182,12 +202,347 @@ const typesenseInstantsearchAdapter2 = new TypesenseInstantSearchAdapter({
     cacheSearchResultsForSeconds: 2 * 60,
   },
   additionalSearchParameters: {
-    query_by: 'kanun_adi,kitap,kisim,bolum,ayirim,konu,madde,icerik',
+    query_by: 'kanun_adi,kitap,kisim,bolum,ayirim,konu,madde,icerik,vec',
     exclude_fields: 'vec',
   },
 });
 
-var searchClient = typesenseInstantsearchAdapter.searchClient;
+// Set up Typesense client
+const typesenseInstantsearchAdapter4 = new TypesenseInstantSearchAdapter({
+  server: {
+    apiKey: 'xyz123',
+    nodes: [
+      {
+        host: 'search.hukukarama.com',
+        port: 443,
+        protocol: 'https',
+      },
+    ],
+    cacheSearchResultsForSeconds: 2 * 60,
+  },
+  additionalSearchParameters: {
+    query_by: 'vec',
+    exclude_fields: 'vec',
+  },
+});
+
+interface SearchRequest {
+  indexName: string;
+  params: {
+    query?: string;
+    page?: number;
+    hitsPerPage?: number;
+    [key: string]: any;
+  };
+}
+
+interface SearchResponse {
+  results: Array<{
+    hits: any[];
+    nbHits: number;
+    nbPages: number;
+    page: number;
+    processingTimeMS: number;
+    hitsPerPage: number;
+    exhaustiveNbHits: boolean;
+    query: string;
+    params: string;
+  }>;
+}
+
+type SearchType = 'hybrid' | 'semantic' | 'textual';
+
+const Search = () => {
+  const [selectedHit, setSelectedHit] = useState<SearchResult | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const [searchError, setSearchError] = useState<string | null>(null);
+  const [searchType, setSearchType] = useState<SearchType>('hybrid');
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+
+  const getSearchClient = (type: SearchType) => {
+    switch (type) {
+      case 'textual':
+        return typesenseInstantsearchAdapter.searchClient;
+      case 'semantic':
+        return typesenseInstantsearchAdapter2.searchClient;
+      case 'hybrid':
+      default:
+        return typesenseInstantsearchAdapter3.searchClient;
+    }
+  };
+
+  const searchClient = {
+    ...getSearchClient(searchType),
+    search(requests: SearchRequest[]) {
+      console.log('Search requests:', requests); // Debug log
+      return getSearchClient(searchType)
+        .search(requests)
+        .then((response: SearchResponse) => {
+          console.log('Search response:', response); // Debug log
+          return response;
+        })
+        .catch((error: Error) => {
+          console.error('Search error details:', {
+            message: error.message,
+            name: error.name,
+            stack: error.stack,
+            requests
+          });
+
+          const errorMessage = `Arama servisi şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin. (${error.message})`;
+          setSearchError(errorMessage);
+
+          return {
+            results: requests.map(() => ({
+              hits: [],
+              nbHits: 0,
+              nbPages: 0,
+              page: 0,
+              processingTimeMS: 0,
+              hitsPerPage: 0,
+              exhaustiveNbHits: true,
+              query: '',
+              params: '',
+            })),
+          };
+        });
+    },
+  };
+
+  // Add useEffect to check Typesense connection on component mount
+  useEffect(() => {
+    // Test the connection by making a simple search
+    searchClient.search([{
+      indexName: 'turk-kanunlari',
+      params: {
+        q: '',
+        hitsPerPage: 1
+      }
+    }]).catch((error: Error) => {
+      console.error('Initial connection test failed:', error);
+      setSearchError('Arama servisi bağlantısı kurulamadı. Lütfen daha sonra tekrar deneyin.');
+    });
+  }, []);
+
+  const toggleFilters = () => {
+    setShowFilters(!showFilters);
+    document.body.style.overflow = !showFilters ? 'hidden' : 'auto';
+  };
+
+  const handleShowDetails = (hit: SearchResult) => {
+    setSelectedHit(hit);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const CustomSearchBox = () => (
+    <div className="search-box-container">
+      <div className="search-box">
+        <FaSearch className="search-icon" />
+        <SearchBox
+          translations={{
+            placeholder: 'Aranacak kelime veya ifadeyi yazın...',
+          }}
+          submit={<></>}
+          reset={<></>}
+          loadingIndicator={<></>}
+          searchAsYouType={true}
+        />
+      </div>
+      <div className="search-type-selector">
+        <select
+          value={searchType}
+          onChange={(e) => setSearchType(e.target.value as SearchType)}
+        >
+          <option value="hybrid">Hibrid Arama</option>
+          <option value="semantic">Anlamsal Arama</option>
+          <option value="textual">Metinsel Arama</option>
+        </select>
+      </div>
+    </div>
+  );
+
+  const toggleFilter = (filterName: string) => {
+    setActiveFilter(activeFilter === filterName ? null : filterName);
+  };
+
+  return (
+    <div className="search-container">
+      <div className="search-header">
+        <h1>Hukuki Arama</h1>
+        <p>Kanunlar, içtihatlar ve hukuki makaleler içerisinde arama yapın</p>
+      </div>
+
+      <InstantSearch
+        searchClient={searchClient}
+        indexName="turk-kanunlari"
+        key={searchType}
+        onSearchStateChange={() => {
+          if (searchError && !searchError.includes('bağlantısı kurulamadı')) {
+            setSearchError(null);
+          }
+        }}
+      >
+        <Configure
+          hitsPerPage={10}
+          attributesToSnippet={['icerik:50']}
+          snippetEllipsisText="..."
+        />
+
+        
+
+        <div className="search-interface">
+          <aside className="filters-sidebar">
+            <div 
+              className={`filter-section ${activeFilter === 'kanun' ? 'active' : ''}`} 
+              data-filter="kanun"
+            >
+              <h4 onClick={() => toggleFilter('kanun')}>Kanun</h4>
+              <div className="filter-content">
+                <RefinementList 
+                  attribute="kanun_adi" 
+                  searchable={true}
+                  translations={{
+                    placeholder: 'Kanun ara...',
+                    noResults: 'Sonuç bulunamadı'
+                  }}
+                />
+              </div>
+            </div>
+
+            <div 
+              className={`filter-section ${activeFilter === 'kitap' ? 'active' : ''}`} 
+              data-filter="kitap"
+            >
+              <h4 onClick={() => toggleFilter('kitap')}>Kitap</h4>
+              <div className="filter-content">
+                <RefinementList 
+                  attribute="kitap" 
+                  searchable={true}
+                  translations={{
+                    placeholder: 'Kitap ara...',
+                    noResults: 'Sonuç bulunamadı'
+                  }}
+                />
+              </div>
+            </div>
+
+            <div 
+              className={`filter-section ${activeFilter === 'kisim' ? 'active' : ''}`} 
+              data-filter="kisim"
+            >
+              <h4 onClick={() => toggleFilter('kisim')}>Kısım</h4>
+              <div className="filter-content">
+                <RefinementList 
+                  attribute="kisim" 
+                  searchable={true}
+                  translations={{
+                    placeholder: 'Kısım ara...',
+                    noResults: 'Sonuç bulunamadı'
+                  }}
+                />
+              </div>
+            </div>
+
+            <div 
+              className={`filter-section ${activeFilter === 'bolum' ? 'active' : ''}`} 
+              data-filter="bolum"
+            >
+              <h4 onClick={() => toggleFilter('bolum')}>Bölüm</h4>
+              <div className="filter-content">
+                <RefinementList 
+                  attribute="bolum" 
+                  searchable={true}
+                  translations={{
+                    placeholder: 'Bölüm ara...',
+                    noResults: 'Sonuç bulunamadı'
+                  }}
+                />
+              </div>
+            </div>
+
+            <div 
+              className={`filter-section ${activeFilter === 'ayirim' ? 'active' : ''}`} 
+              data-filter="ayirim"
+            >
+              <h4 onClick={() => toggleFilter('ayirim')}>Ayırım</h4>
+              <div className="filter-content">
+                <RefinementList 
+                  attribute="ayirim" 
+                  searchable={true}
+                  translations={{
+                    placeholder: 'Ayırım ara...',
+                    noResults: 'Sonuç bulunamadı'
+                  }}
+                />
+              </div>
+            </div>
+
+            <div 
+              className={`filter-section ${activeFilter === 'konu' ? 'active' : ''}`} 
+              data-filter="konu"
+            >
+              <h4 onClick={() => toggleFilter('konu')}>Konu</h4>
+              <div className="filter-content">
+                <RefinementList 
+                  attribute="konu" 
+                  searchable={true}
+                  translations={{
+                    placeholder: 'Konu ara...',
+                    noResults: 'Sonuç bulunamadı'
+                  }}
+                />
+              </div>
+            </div>
+          </aside>
+
+          <main>
+            <CustomSearchBox />
+            <div className="search-stats">
+              <Stats
+                translations={{
+                  stats(nbHits, processingTimeMS) {
+                    return `${nbHits} sonuç bulundu (${processingTimeMS} ms)`;
+                  },
+                }}
+              />
+            </div>
+            {searchError && (
+              <div className="search-error" style={{
+                background: 'rgba(255, 0, 0, 0.1)',
+                border: '1px solid rgba(255, 0, 0, 0.2)',
+                borderRadius: '8px',
+                padding: '1rem',
+                marginBottom: '1rem',
+                color: '#ff6b6b'
+              }}>
+                {searchError}
+              </div>
+            )}
+            <div className="search-results">
+              <Hits hitComponent={({ hit }) => (
+                <Hit hit={hit as SearchResult} onShowDetails={handleShowDetails} />
+              )} />
+              <div className="pagination">
+                <Pagination />
+              </div>
+            </div>
+          </main>
+        </div>
+      </InstantSearch>
+
+      <DetailModal 
+        isOpen={isModalOpen} 
+        onClose={handleCloseModal} 
+        hit={selectedHit} 
+      />
+    </div>
+  );
+};
 
 // Custom Hit component to render each search result
 const Hit = ({ hit, onShowDetails }: { hit: SearchResult; onShowDetails: (hit: SearchResult) => void }) => {
@@ -203,8 +558,9 @@ const Hit = ({ hit, onShowDetails }: { hit: SearchResult; onShowDetails: (hit: S
       borderRadius: '12px',
       padding: '1.5rem',
       marginBottom: '1rem',
-      border: '1px solid rgba(255, 214, 19, 0.1)'
-    }}>
+      border: '1px solid rgba(255, 214, 19, 0.1)',
+      cursor: 'pointer'
+    }} onClick={() => onShowDetails(hit)}>
       <div className="result-header" style={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -216,7 +572,7 @@ const Hit = ({ hit, onShowDetails }: { hit: SearchResult; onShowDetails: (hit: S
           fontSize: '20px',
           color: '#FFD613',
           margin: 0
-        }}>{hit.kanun_adi} - Madde {hit.madde}</h3>
+        }}>{hit.madde}</h3>
         <span className="type-tag" style={{
           background: 'rgba(255, 214, 19, 0.1)',
           color: '#FFD613',
@@ -225,213 +581,23 @@ const Hit = ({ hit, onShowDetails }: { hit: SearchResult; onShowDetails: (hit: S
           fontSize: '14px',
           fontFamily: 'Poppins'
         }}>
-          Yasa
+          {hit.kanun_adi}
         </span>
       </div>
-      <p className="result-source" style={{
+      {/* <p className="result-source" style={{
         fontSize: '14px',
         color: '#FFD613',
         marginBottom: '8px',
         fontFamily: 'Poppins'
       }}>
-        {hit.kanun_adi}
-      </p>
+        {hit.konu[0 ]}
+      </p> */}
       <p className="result-excerpt" style={{
         fontFamily: 'Poppins',
         fontSize: '16px',
         lineHeight: 1.6,
         color: '#FFFFFF'
       }}>{truncatedContent}</p>
-      <div className="result-footer" style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginTop: '1rem'
-      }}>
-        <button 
-          className="read-more" 
-          onClick={() => onShowDetails(hit)}
-          style={{
-            fontFamily: 'Poppins',
-            fontSize: '14px',
-            padding: '0.5rem 1rem',
-            borderRadius: '8px',
-            border: 'none',
-            background: '#FFD613',
-            color: '#000000',
-            cursor: 'pointer',
-            marginLeft: 'auto'
-          }}
-        >
-          Detayları Gör
-        </button>
-      </div>
-    </div>
-  );
-};
-
-const Search = () => {
-  const [searchType, setSearchType] = useState<'semantic' | 'direct'>('semantic');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedHit, setSelectedHit] = useState<SearchResult | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showFilters, setShowFilters] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-
-  const filters = {
-    'Kanun Türü': ['Borçlar Kanunu', 'İş Kanunu', 'Türk Ceza Kanunu', 'Medeni Kanun'],
-    'Yargı Mercii': ['Yargıtay', 'Danıştay', 'Anayasa Mahkemesi'],
-    'Tarih Aralığı': ['Son 1 Yıl', 'Son 5 Yıl', '5 Yıldan Eski'],
-  };
-
-  const handleFilterToggle = (filter: string) => {
-    setSelectedFilters(prev => 
-      prev.includes(filter)
-        ? prev.filter(f => f !== filter)
-        : [...prev, filter]
-    );
-  };
-
-  const toggleFilters = () => {
-    setShowFilters(!showFilters);
-    // Mobil görünümde filtreleri gösterirken body scroll'u engelle
-    document.body.style.overflow = !showFilters ? 'hidden' : 'auto';
-  };
-
-  // Handle showing details in modal
-  const handleShowDetails = (hit: SearchResult) => {
-    setSelectedHit(hit);
-    setIsModalOpen(true);
-  };
-
-  // Handle closing the modal
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  // Configure search parameters based on search type
-  const getSearchParams = () => {
-    if (searchType === 'semantic') {
-      searchClient = typesenseInstantsearchAdapter.searchClient;
-      return {
-        q: searchQuery,
-        query_by: 'vec',
-        exclude_fields: 'vec'
-      };
-    } else {
-      searchClient = typesenseInstantsearchAdapter2.searchClient;
-      return {
-        q: searchQuery,
-        query_by: 'kanun_adi,kitap,kisim,bolum,ayirim,konu,madde,icerik',
-        exclude_fields: 'vec'
-      };
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) return;
-
-    setIsLoading(true);
-    // API çağrısı burada yapılacak
-    try {
-      // API implementation
-      console.log('Searching for:', searchQuery, 'with filters:', selectedFilters);
-    } catch (error) {
-      console.error('Search error:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  return (
-    <div className="search-container">
-      <div className="search-header">
-        <h1>Hukuki Arama</h1>
-        <p>
-          Kanunlar, içtihatlar ve hukuki makaleler içerisinde arama yapın
-        </p>
-      </div>
-
-      <button 
-        className="mobile-filters-button"
-        onClick={toggleFilters}
-      >
-        {showFilters ? 'Filtreleri Kapat' : 'Filtreleri Göster'}
-        {showFilters ? <FaTimes /> : null}
-      </button>
-
-      <div className="search-interface">
-        <aside className={`filters-sidebar ${showFilters ? 'active' : ''}`}>
-          {Object.entries(filters).map(([category, options]) => (
-            <div key={category} className="filter-section">
-              <h4>{category}</h4>
-              <div className="filter-list">
-                {options.map(option => (
-                  <label key={option} className="filter-item">
-                    <div className={`filter-checkbox ${selectedFilters.includes(option) ? 'checked' : ''}`}>
-                      {selectedFilters.includes(option) && '✓'}
-                    </div>
-                    <input
-                      type="checkbox"
-                      checked={selectedFilters.includes(option)}
-                      onChange={() => handleFilterToggle(option)}
-                      style={{ display: 'none' }}
-                    />
-                    {option}
-                  </label>
-                ))}
-              </div>
-            </div>
-          ))}
-        </aside>
-
-        <main>
-          <form onSubmit={handleSubmit}>
-            <div className="search-box">
-              <FaSearch className="search-icon" />
-              <input
-                type="text"
-                className="search-input"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Aranacak kelime veya ifadeyi yazın..."
-              />
-            </div>
-          </form>
-
-          <div className="search-results">
-            {/* Örnek sonuç kartları */}
-            {[1, 2, 3].map((_, index) => (
-              <div key={index} className="result-card">
-                <div className="result-header">
-                  <h3 className="result-title">Yargıtay 9. Hukuk Dairesi Kararı</h3>
-                  <div className="result-meta">
-                    <span>Karar No: 2023/1234</span>
-                    <span>Tarih: 12.03.2023</span>
-                  </div>
-                </div>
-                <p className="result-content">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </p>
-                <div className="result-tags">
-                  <span className="result-tag">İş Hukuku</span>
-                  <span className="result-tag">Tazminat</span>
-                  <span className="result-tag">Fesih</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </main>
-      </div>
-
-      {/* Detail Modal */}
-      <DetailModal 
-        isOpen={isModalOpen} 
-        onClose={handleCloseModal} 
-        hit={selectedHit} 
-      />
     </div>
   );
 };

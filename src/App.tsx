@@ -70,161 +70,163 @@ function App() {
                   <p style={{
                     fontSize: '24px',
                     color: '#fff',
-                    marginBottom: '40px',
+                    marginBottom: '20px',
                     maxWidth: '1020px',
                     textAlign: 'left'
                   }}>
-                    <ul style={{
-                      listStyle: 'none',
-                      padding: 0,
-                      margin: 0
-                    }}>
-                      <li style={{
-                        marginBottom: '12px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '15px',
-                        background: 'rgba(255, 214, 19, 0.1)',
-                        padding: '12px 16px',
-                        borderRadius: '8px',
-                        transition: 'all 0.3s ease'
-                      }}>
-                        <div style={{
-                          minWidth: '32px',
-                          height: '32px',
-                          background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
-                          borderRadius: '6px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '18px'
-                        }}>
-                          ⚖️
-                        </div>
-                        İstediğiniz olay ya da durum ile alakalı kanunlara göre yapay zeka analizi alabilirsiniz
-                      </li>
-                      <li style={{
-                        marginBottom: '12px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '15px',
-                        background: 'rgba(255, 214, 19, 0.1)',
-                        padding: '12px 16px',
-                        borderRadius: '8px',
-                        transition: 'all 0.3s ease'
-                      }}>
-                        <div style={{
-                          minWidth: '32px',
-                          height: '32px',
-                          background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
-                          borderRadius: '6px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '18px'
-                        }}>
-                          🔍
-                        </div>
-                        Olay ya da durumla ilgili yapay zeka destekli kanun araması yapabilirsiniz
-                      </li>
-                      <li style={{
-                        marginBottom: '12px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '15px',
-                        background: 'rgba(255, 214, 19, 0.1)',
-                        padding: '12px 16px',
-                        borderRadius: '8px',
-                        transition: 'all 0.3s ease'
-                      }}>
-                        <div style={{
-                          minWidth: '32px',
-                          height: '32px',
-                          background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
-                          borderRadius: '6px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '18px'
-                        }}>
-                          📚
-                        </div>
-                        Doğrudan kanun araması yapabilirsiniz
-                      </li>
-                      <li style={{
-                        marginBottom: '12px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '15px',
-                        background: 'rgba(255, 214, 19, 0.1)',
-                        padding: '12px 16px',
-                        borderRadius: '8px',
-                        transition: 'all 0.3s ease'
-                      }}>
-                        <div style={{
-                          minWidth: '32px',
-                          height: '32px',
-                          background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
-                          borderRadius: '6px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '18px'
-                        }}>
-                          📝
-                        </div>
-                        Durumunuza özel yapay zekadan dilekçe oluşturabilirsiniz
-                      </li>
-                      <li style={{
-                        marginBottom: '12px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '15px',
-                        background: 'rgba(255, 214, 19, 0.1)',
-                        padding: '12px 16px',
-                        borderRadius: '8px',
-                        transition: 'all 0.3s ease'
-                      }}>
-                        <div style={{
-                          minWidth: '32px',
-                          height: '32px',
-                          background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
-                          borderRadius: '6px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '18px'
-                        }}>
-                          🔎
-                        </div>
-                        Olayınızla ilgili emsal kararları(içtihatları) yapay zeka destekli aramayla ulaşabilirsiniz (Çok Yakında)
-                      </li>
-                      <li style={{
-                        marginBottom: '0',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '15px',
-                        background: 'rgba(255, 214, 19, 0.1)',
-                        padding: '12px 16px',
-                        borderRadius: '8px',
-                        transition: 'all 0.3s ease'
-                      }}>
-                        <div style={{
-                          minWidth: '32px',
-                          height: '32px',
-                          background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
-                          borderRadius: '6px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '18px'
-                        }}>
-                          📊
-                        </div>
-                        Olay ya da durum ile alakalı Emsal karara(içtihata) göre yapay zeka değerlendirmesi alabilirsiniz (Çok yakında)
-                      </li>
-                    </ul>
+                    Hukuki sorunlarınız için yapay zeka desteği ile çözüm bulun
                   </p>
+                  <ul style={{
+                    listStyle: 'none',
+                    padding: 0,
+                    margin: 0,
+                    marginBottom: '40px'
+                  }}>
+                    <li style={{
+                      marginBottom: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '15px',
+                      background: 'rgba(255, 214, 19, 0.1)',
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      transition: 'all 0.3s ease'
+                    }}>
+                      <div style={{
+                        minWidth: '32px',
+                        height: '32px',
+                        background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
+                        borderRadius: '6px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '18px'
+                      }}>
+                        ⚖️
+                      </div>
+                      İstediğiniz olay ya da durum ile alakalı kanunlara göre yapay zeka analizi alabilirsiniz
+                    </li>
+                    <li style={{
+                      marginBottom: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '15px',
+                      background: 'rgba(255, 214, 19, 0.1)',
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      transition: 'all 0.3s ease'
+                    }}>
+                      <div style={{
+                        minWidth: '32px',
+                        height: '32px',
+                        background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
+                        borderRadius: '6px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '18px'
+                      }}>
+                        🔍
+                      </div>
+                      Olay ya da durumla ilgili yapay zeka destekli kanun araması yapabilirsiniz
+                    </li>
+                    <li style={{
+                      marginBottom: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '15px',
+                      background: 'rgba(255, 214, 19, 0.1)',
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      transition: 'all 0.3s ease'
+                    }}>
+                      <div style={{
+                        minWidth: '32px',
+                        height: '32px',
+                        background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
+                        borderRadius: '6px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '18px'
+                      }}>
+                        📚
+                      </div>
+                      Doğrudan kanun araması yapabilirsiniz
+                    </li>
+                    <li style={{
+                      marginBottom: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '15px',
+                      background: 'rgba(255, 214, 19, 0.1)',
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      transition: 'all 0.3s ease'
+                    }}>
+                      <div style={{
+                        minWidth: '32px',
+                        height: '32px',
+                        background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
+                        borderRadius: '6px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '18px'
+                      }}>
+                        📝
+                      </div>
+                      Durumunuza özel yapay zekadan dilekçe oluşturabilirsiniz
+                    </li>
+                    <li style={{
+                      marginBottom: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '15px',
+                      background: 'rgba(255, 214, 19, 0.1)',
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      transition: 'all 0.3s ease'
+                    }}>
+                      <div style={{
+                        minWidth: '32px',
+                        height: '32px',
+                        background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
+                        borderRadius: '6px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '18px'
+                      }}>
+                        🔎
+                      </div>
+                      Olayınızla ilgili emsal kararları(içtihatları) yapay zeka destekli aramayla ulaşabilirsiniz (Çok Yakında)
+                    </li>
+                    <li style={{
+                      marginBottom: '0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '15px',
+                      background: 'rgba(255, 214, 19, 0.1)',
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      transition: 'all 0.3s ease'
+                    }}>
+                      <div style={{
+                        minWidth: '32px',
+                        height: '32px',
+                        background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
+                        borderRadius: '6px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '18px'
+                      }}>
+                        📊
+                      </div>
+                      Olay ya da durum ile alakalı Emsal karara(içtihata) göre yapay zeka değerlendirmesi alabilirsiniz (Çok yakında)
+                    </li>
+                  </ul>
                   <div style={{
                     display: 'flex',
                     gap: '20px',
