@@ -9,6 +9,10 @@ export default defineConfig(() => ({
     port: 8522,
     strictPort: true,
     hmr: false,
+    watch: {
+      ignored: ['**/*']
+    },
+    middlewareMode: true,
     proxy: {
       '/api': {
         target: 'https://hukukarama.com',
