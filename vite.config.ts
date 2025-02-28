@@ -6,7 +6,7 @@ export default defineConfig(() => ({
   plugins: [react()],
   server: {
     host: '0.0.0.0',
-    port: 5173,
+    port: 8522,
     strictPort: false,
     hmr: {
       // Using default HMR settings (WebSocket on the same host/port as the dev server)
