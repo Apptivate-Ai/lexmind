@@ -29,7 +29,7 @@ function App() {
         <header className="header">
           <div className="logo" style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
             <Link to="/" style={{ display: 'flex', alignItems: 'center' }} onClick={closeMenu}>
-              <img src={logo} alt="Hukuk Arama Logo" style={{ height: '60px', width: 'auto' }} />
+              <img src={logo} alt="Hukuk Arama Logo" style={{ height: '250px', width: 'auto' }} />
             </Link>
           </div>
           
