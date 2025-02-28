@@ -13,14 +13,7 @@ export default defineConfig(() => ({
       '/api': {
         target: 'https://hukukarama.com',
         changeOrigin: true,
-        secure: true,
-        ws: true
-      },
-      '^/.*': {
-        target: 'http://localhost:8522',
-        changeOrigin: true,
-        ws: true,
-        rewrite: (path) => path
+        secure: true
       }
     }
   },
