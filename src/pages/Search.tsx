@@ -5,12 +5,11 @@ import {
   SearchBox,
   Hits,
   RefinementList,
-  ClearRefinements,
   Stats,
   Configure,
   Pagination
 } from 'react-instantsearch-dom';
-import { FaSearch, FaTimes } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 
 // Define the search result interface based on the schema
 interface SearchResult {
@@ -207,25 +206,6 @@ const typesenseInstantsearchAdapter3 = new TypesenseInstantSearchAdapter({
   },
 });
 
-// Set up Typesense client
-const typesenseInstantsearchAdapter4 = new TypesenseInstantSearchAdapter({
-  server: {
-    apiKey: 'xyz123',
-    nodes: [
-      {
-        host: 'search.hukukarama.com',
-        port: 443,
-        protocol: 'https',
-      },
-    ],
-    cacheSearchResultsForSeconds: 2 * 60,
-  },
-  additionalSearchParameters: {
-    query_by: 'vec',
-    exclude_fields: 'vec',
-  },
-});
-
 interface SearchRequest {
   indexName: string;
   params: {
@@ -255,7 +235,6 @@ type SearchType = 'hybrid' | 'semantic' | 'textual';
 const Search = () => {
   const [selectedHit, setSelectedHit] = useState<SearchResult | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showFilters, setShowFilters] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
   const [searchType, setSearchType] = useState<SearchType>('hybrid');
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
@@ -324,11 +303,6 @@ const Search = () => {
       setSearchError('Arama servisi bağlantısı kurulamadı. Lütfen daha sonra tekrar deneyin.');
     });
   }, []);
-
-  const toggleFilters = () => {
-    setShowFilters(!showFilters);
-    document.body.style.overflow = !showFilters ? 'hidden' : 'auto';
-  };
 
   const handleShowDetails = (hit: SearchResult) => {
     setSelectedHit(hit);

@@ -1,6 +1,6 @@
 import { useState, FormEvent } from 'react';
 import axios from 'axios';
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, PageOrientation, convertInchesToTwip, PageNumber, Footer, Header, NumberFormat } from 'docx';
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, convertInchesToTwip, PageNumber, Header } from 'docx';
 import '../styles/Petition.css';
 
 interface FormData {
@@ -108,7 +108,6 @@ const Petition = () => {
   const convertHtmlToDocxElements = (html: string) => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
-    const elements: Paragraph[] = [];
 
     const processNode = (node: Node): Paragraph[] => {
       const paragraphs: Paragraph[] = [];
@@ -121,14 +120,14 @@ const Petition = () => {
                 new TextRun({
                   text: node.textContent,
                   font: "Times New Roman",
-                  size: 24, // 12pt
+                  size: 24,
                 }),
               ],
               alignment: AlignmentType.JUSTIFIED,
               spacing: {
-                line: 360, // 1.5 satır aralığı
-                before: 240, // 12pt boşluk
-                after: 240, // 12pt boşluk
+                line: 360,
+                before: 240,
+                after: 240,
               },
             })
           );
@@ -145,8 +144,8 @@ const Petition = () => {
                 heading: HeadingLevel.HEADING_1,
                 alignment: AlignmentType.CENTER,
                 spacing: {
-                  before: 480, // 24pt
-                  after: 240, // 12pt
+                  before: 480,
+                  after: 240,
                 },
               })
             );
@@ -164,7 +163,7 @@ const Petition = () => {
                 ],
                 alignment: AlignmentType.JUSTIFIED,
                 spacing: {
-                  line: 360, // 1.5 satır aralığı
+                  line: 360,
                   before: 240,
                   after: 240,
                 },
@@ -197,7 +196,6 @@ const Petition = () => {
             break;
 
           default:
-            // Diğer elementler için alt nodeları işle
             Array.from(node.childNodes).forEach((child) => {
               paragraphs.push(...processNode(child));
             });
@@ -213,7 +211,7 @@ const Petition = () => {
   const downloadAsWord = async () => {
     if (!generatedPetition) return;
 
-    const elements = convertHtmlToDocxElements(generatedPetition);
+    const docElements = convertHtmlToDocxElements(generatedPetition);
 
     const doc = new Document({
       sections: [{
@@ -258,7 +256,7 @@ const Petition = () => {
             ],
           }),
         },
-        children: elements,
+        children: docElements,
       }],
     });
 
