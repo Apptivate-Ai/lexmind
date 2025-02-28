@@ -1,9 +1,9 @@
 import { useState, FormEvent } from 'react';
+import axios from 'axios';
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, PageOrientation, convertInchesToTwip, PageNumber, Footer, Header, NumberFormat } from 'docx';
 import '../styles/Petition.css';
 
 interface FormData {
-  petitionType: string;
-  court: string;
   subject: string;
   plaintiffName: string;
   plaintiffAddress: string;
@@ -14,10 +14,27 @@ interface FormData {
   demands: string;
 }
 
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}
+
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={e => e.stopPropagation()}>
+        <button className="modal-close" onClick={onClose}>×</button>
+        {children}
+      </div>
+    </div>
+  );
+};
+
 const Petition = () => {
   const [formData, setFormData] = useState<FormData>({
-    petitionType: '',
-    court: '',
     subject: '',
     plaintiffName: '',
     plaintiffAddress: '',
@@ -31,6 +48,8 @@ const Petition = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [generatedPetition, setGeneratedPetition] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -46,15 +65,29 @@ const Petition = () => {
     setIsLoading(true);
     setError(null);
     setSuccess(null);
+    setGeneratedPetition(null);
 
     try {
-      // API çağrısı simülasyonu
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const requestData = {
+        query: formData.subject,
+        user_info: {
+          Davacı_Adı_Soyadı: formData.plaintiffName,
+          Davacı_Adresi: formData.plaintiffAddress,
+          Davalı_Adı_Soyadı: formData.defendantName,
+          Davalı_Adresi: formData.defendantAddress,
+          Acikalamalar: formData.details,
+          deliller: formData.evidences,
+          talepler: formData.demands
+        }
+      };
+
+      const response = await axios.post('https://api.hukukarama.com/generate-dilekce', requestData);
+      setGeneratedPetition(response.data);
       setSuccess('Dilekçeniz başarıyla oluşturuldu.');
+      setIsModalOpen(true);
+      
       // Form verilerini sıfırla
       setFormData({
-        petitionType: '',
-        court: '',
         subject: '',
         plaintiffName: '',
         plaintiffAddress: '',
@@ -66,9 +99,176 @@ const Petition = () => {
       });
     } catch (err) {
       setError('Bir hata oluştu. Lütfen tekrar deneyin.');
+      console.error('API Error:', err);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const convertHtmlToDocxElements = (html: string) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const elements: Paragraph[] = [];
+
+    const processNode = (node: Node): Paragraph[] => {
+      const paragraphs: Paragraph[] = [];
+
+      if (node.nodeType === Node.TEXT_NODE) {
+        if (node.textContent?.trim()) {
+          paragraphs.push(
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: node.textContent,
+                  font: "Times New Roman",
+                  size: 24, // 12pt
+                }),
+              ],
+              alignment: AlignmentType.JUSTIFIED,
+              spacing: {
+                line: 360, // 1.5 satır aralığı
+                before: 240, // 12pt boşluk
+                after: 240, // 12pt boşluk
+              },
+            })
+          );
+        }
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        const element = node as Element;
+        
+        switch (element.tagName.toLowerCase()) {
+          case 'h1':
+          case 'h2':
+            paragraphs.push(
+              new Paragraph({
+                text: element.textContent || '',
+                heading: HeadingLevel.HEADING_1,
+                alignment: AlignmentType.CENTER,
+                spacing: {
+                  before: 480, // 24pt
+                  after: 240, // 12pt
+                },
+              })
+            );
+            break;
+
+          case 'p':
+            paragraphs.push(
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: element.textContent || '',
+                    font: "Times New Roman",
+                    size: 24,
+                  }),
+                ],
+                alignment: AlignmentType.JUSTIFIED,
+                spacing: {
+                  line: 360, // 1.5 satır aralığı
+                  before: 240,
+                  after: 240,
+                },
+              })
+            );
+            break;
+
+          case 'ul':
+          case 'ol':
+            Array.from(element.children).forEach((li, index) => {
+              paragraphs.push(
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: `${index + 1}. ${li.textContent}`,
+                      font: "Times New Roman",
+                      size: 24,
+                    }),
+                  ],
+                  alignment: AlignmentType.JUSTIFIED,
+                  spacing: {
+                    line: 360,
+                    before: 240,
+                    after: 240,
+                  },
+                  indent: { left: convertInchesToTwip(0.5) },
+                })
+              );
+            });
+            break;
+
+          default:
+            // Diğer elementler için alt nodeları işle
+            Array.from(node.childNodes).forEach((child) => {
+              paragraphs.push(...processNode(child));
+            });
+        }
+      }
+
+      return paragraphs;
+    };
+
+    return processNode(doc.body);
+  };
+
+  const downloadAsWord = async () => {
+    if (!generatedPetition) return;
+
+    const elements = convertHtmlToDocxElements(generatedPetition);
+
+    const doc = new Document({
+      sections: [{
+        properties: {
+          page: {
+            margin: {
+              top: convertInchesToTwip(1),
+              right: convertInchesToTwip(1),
+              bottom: convertInchesToTwip(1),
+              left: convertInchesToTwip(1),
+            },
+          },
+        },
+        headers: {
+          default: new Header({
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.RIGHT,
+                children: [
+                  new TextRun({
+                    text: "Sayfa ",
+                    font: "Times New Roman",
+                    size: 20,
+                  }),
+                  new TextRun({
+                    children: [PageNumber.CURRENT],
+                    font: "Times New Roman",
+                    size: 20,
+                  }),
+                  new TextRun({
+                    text: " / ",
+                    font: "Times New Roman",
+                    size: 20,
+                  }),
+                  new TextRun({
+                    children: [PageNumber.TOTAL_PAGES],
+                    font: "Times New Roman",
+                    size: 20,
+                  }),
+                ],
+              }),
+            ],
+          }),
+        },
+        children: elements,
+      }],
+    });
+
+    const blob = await Packer.toBlob(doc);
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'dilekce.docx';
+    a.click();
+    window.URL.revokeObjectURL(url);
   };
 
   return (
@@ -83,47 +283,6 @@ const Petition = () => {
       <div className="petition-form-container">
         <form onSubmit={handleSubmit}>
           <div className="form-grid">
-            <div className="form-group">
-              <label className="form-label" htmlFor="petitionType">
-                Dilekçe Türü
-              </label>
-              <select
-                id="petitionType"
-                name="petitionType"
-                className="form-select"
-                value={formData.petitionType}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Seçiniz</option>
-                <option value="dava">Dava Dilekçesi</option>
-                <option value="itiraz">İtiraz Dilekçesi</option>
-                <option value="temyiz">Temyiz Dilekçesi</option>
-                <option value="skayet">Şikayet Dilekçesi</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label className="form-label" htmlFor="court">
-                Mahkeme
-              </label>
-              <select
-                id="court"
-                name="court"
-                className="form-select"
-                value={formData.court}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Seçiniz</option>
-                <option value="asliye-hukuk">Asliye Hukuk Mahkemesi</option>
-                <option value="sulh-hukuk">Sulh Hukuk Mahkemesi</option>
-                <option value="is">İş Mahkemesi</option>
-                <option value="aile">Aile Mahkemesi</option>
-                <option value="ticaret">Ticaret Mahkemesi</option>
-              </select>
-            </div>
-
             <div className="form-group full-width">
               <label className="form-label" htmlFor="subject">
                 Konu
@@ -274,6 +433,18 @@ const Petition = () => {
           </button>
         </form>
       </div>
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <div className="generated-petition-container">
+          <h2>Oluşturulan Dilekçe</h2>
+          <div className="generated-petition" dangerouslySetInnerHTML={{ __html: generatedPetition || '' }} />
+          <div className="modal-actions">
+            <button className="download-button" onClick={downloadAsWord}>
+              Word Olarak İndir
+            </button>
+          </div>
+        </div>
+      </Modal>
 
       {isLoading && (
         <div className="loading-overlay">
