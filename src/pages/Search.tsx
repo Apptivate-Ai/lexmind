@@ -332,7 +332,7 @@ const Search = () => {
           value={searchType}
           onChange={(e) => setSearchType(e.target.value as SearchType)}
         >
-          <option value="hybrid">Hibrid Arama</option>
+          <option value="hybrid">Hibrit Arama</option>
           <option value="semantic">Anlamsal Arama</option>
           <option value="textual">Metinsel Arama</option>
         </select>
