@@ -12,7 +12,6 @@ export default defineConfig(() => ({
     watch: {
       ignored: ['**/*']
     },
-    middlewareMode: true,
     proxy: {
       '/api': {
         target: 'https://hukukarama.com',
