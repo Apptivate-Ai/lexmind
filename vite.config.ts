@@ -8,15 +8,24 @@ export default defineConfig(() => ({
     host: '0.0.0.0',
     port: 8522,
     strictPort: true,
-    hmr: false,
+    hmr: {
+      protocol: 'http',
+      host: 'localhost',
+      port: 8522,
+      clientPort: 8522,
+      timeout: 0,
+      overlay: false
+    },
     watch: {
-      ignored: ['**/*']
+      ignored: ['**/*'],
+      usePolling: false
     },
     proxy: {
       '/api': {
         target: 'https://hukukarama.com',
         changeOrigin: true,
-        secure: true
+        secure: true,
+        ws: false
       }
     }
   },
