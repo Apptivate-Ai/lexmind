@@ -32,11 +32,8 @@ export default defineConfig(() => ({
     port: 5173,
     strictPort: false
   },
-  // Production build options
   build: {
-    // Generate source maps for production
     sourcemap: true,
-    // Minify options
     minify: 'terser' as const,
     terserOptions: {
       compress: {
