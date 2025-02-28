@@ -7,10 +7,11 @@ export default defineConfig(() => ({
   server: {
     host: '0.0.0.0',
     port: 8522,
-    strictPort: false,
+    strictPort: true,
     hmr: {
-      // Using default HMR settings (WebSocket on the same host/port as the dev server)
-      // This removes the problematic external configuration
+      host: 'hukukarama.com',
+      protocol: 'wss',
+      clientPort: 443
     },
     proxy: {
       '/api': {
