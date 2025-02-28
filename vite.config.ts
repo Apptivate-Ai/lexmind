@@ -8,16 +8,19 @@ export default defineConfig(() => ({
     host: '0.0.0.0',
     port: 8522,
     strictPort: true,
-    hmr: {
-      host: 'hukukarama.com',
-      protocol: 'wss',
-      clientPort: 443
-    },
+    hmr: false,
     proxy: {
       '/api': {
         target: 'https://hukukarama.com',
         changeOrigin: true,
-        secure: true
+        secure: true,
+        ws: true
+      },
+      '^/.*': {
+        target: 'http://localhost:8522',
+        changeOrigin: true,
+        ws: true,
+        rewrite: (path) => path
       }
     }
   },
