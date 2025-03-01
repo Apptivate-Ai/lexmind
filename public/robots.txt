@@ -8,7 +8,14 @@ Sitemap: https://hukukarama.com/sitemap.xml
 # Crawl-delay for all bots
 Crawl-delay: 10
 
-# Specific paths to disallow if needed
-# Disallow: /api/
-# Disallow: /admin/
-# Disallow: /private/ 
+# Specific paths to disallow
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
+
+# Allow all important pages
+Allow: /chat
+Allow: /search
+Allow: /petition
+Allow: /contact
+Allow: /terms 

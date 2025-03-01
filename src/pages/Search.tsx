@@ -78,7 +78,8 @@ const DetailModal = ({
             justifyContent: 'center',
             cursor: 'pointer',
             fontSize: '18px',
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            fontFamily: 'Poppins, sans-serif'
           }}
         >
           ×
@@ -331,10 +332,20 @@ const Search = () => {
         <select
           value={searchType}
           onChange={(e) => setSearchType(e.target.value as SearchType)}
+          style={{
+            fontFamily: 'Poppins, sans-serif',
+            fontSize: '14px',
+            padding: '8px 12px',
+            borderRadius: '8px',
+            background: 'rgba(255, 255, 255, 0.05)',
+            color: '#FFFFFF',
+            border: '1px solid rgba(255, 214, 19, 0.3)',
+            cursor: 'pointer'
+          }}
         >
           <option value="hybrid">Hibrit Arama</option>
-          <option value="semantic">Anlamsal Arama</option>
-          <option value="textual">Metinsel Arama</option>
+          <option value="semantic">Olay ya da durumla ilgili ilgili kanun maddelerini arama</option>
+          <option value="textual">Doğrudan kanun maddesi arama</option>
         </select>
       </div>
     </div>
@@ -346,9 +357,26 @@ const Search = () => {
 
   return (
     <div className="search-container">
-      <div className="search-header">
-        <h1>Hukuki Arama</h1>
-        <p>Kanunlar, içtihatlar ve hukuki makaleler içerisinde arama yapın</p>
+      <div className="petition-header">
+        <h1>Kanun Maddesi Arama</h1>
+        <p>Bu kısımda dilerseniz olay ya da durumunuzla ilgili kanun maddelerini arayabilirsiniz, dilerseniz doğrudan kanun maddesini arayabilirsiniz ya da hibrit arama yapabilirsiniz.</p>
+      </div>
+
+      <div className="disclaimer-note" style={{
+        backgroundColor: "rgba(255, 214, 19, 0.1)",
+        border: "1px solid rgba(255, 214, 19, 0.3)",
+        borderRadius: "8px",
+        padding: "12px 16px",
+        marginBottom: "20px",
+        fontSize: "14px",
+        color: "#FFFFFF",
+        textAlign: "left",
+        lineHeight: "1.6",
+        fontFamily: "Poppins, sans-serif",
+        maxWidth: "1200px",
+        margin: "0 auto 20px auto"
+      }}>
+        <strong style={{ color: "#FFD613", fontFamily: "Poppins, sans-serif", fontWeight: "500" }}>Önemli Not:</strong> Bu arama sonuçları bilgilendirme amaçlıdır ve güncel olmayabilir. Hukuki kararlar vermeden önce resmi kaynaklardan doğrulama yapmanız ve bir hukuk uzmanına danışmanız önerilir.
       </div>
 
       <InstantSearch
@@ -486,12 +514,15 @@ const Search = () => {
               />
             </div>
             {searchError && (
-              <div className="search-error" style={{
-                background: 'rgba(255, 0, 0, 0.1)',
-                border: '1px solid rgba(255, 0, 0, 0.2)',
-                borderRadius: '8px',
+              <div style={{
                 padding: '1rem',
                 marginBottom: '1rem',
+                backgroundColor: 'rgba(255, 107, 107, 0.1)',
+                borderRadius: '8px',
+                textAlign: 'center',
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: '16px',
+                lineHeight: '1.6',
                 color: '#ff6b6b'
               }}>
                 {searchError}

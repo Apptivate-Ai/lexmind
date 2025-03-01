@@ -1,0 +1,11 @@
+This is a placeholder for the Open Graph image.
+
+Please create an image with the following specifications:
+- Size: 1200 x 630 pixels
+- Background: Dark background (black or dark gradient)
+- Logo: Include the HukukArama logo prominently
+- Text: "HukukArama - Yapay Zeka Destekli Hukuk Platformu"
+- Colors: Use the brand gold color (#FFD613) for the main text/logo
+- Save as: og-image.jpg in this folder
+
+For detailed instructions, see og-image-instructions.html 

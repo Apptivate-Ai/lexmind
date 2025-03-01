@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Graph Image Instructions</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #FFD613;
+    }
+    .instructions {
+      background-color: #f5f5f5;
+      padding: 20px;
+      border-radius: 5px;
+    }
+    .example {
+      margin-top: 30px;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 5px;
+    }
+    code {
+      background-color: #eee;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Open Graph Image Instructions</h1>
+  
+  <div class="instructions">
+    <h2>How to Create an Open Graph Image for HukukArama</h2>
+    <p>To improve social media sharing, please create an Open Graph image with the following specifications:</p>
+    
+    <ol>
+      <li>Size: 1200 x 630 pixels (standard Open Graph size)</li>
+      <li>Background: Dark background (black or dark gradient)</li>
+      <li>Logo: Include the HukukArama logo prominently</li>
+      <li>Text: "HukukArama - Yapay Zeka Destekli Hukuk Platformu"</li>
+      <li>Colors: Use the brand gold color (#FFD613) for the main text/logo</li>
+      <li>Save as: <code>og-image.jpg</code> in the <code>public</code> folder</li>
+    </ol>
+  </div>
+  
+  <div class="example">
+    <h2>Example SVG Code</h2>
+    <p>Here's a simple SVG example that could be converted to a JPG:</p>
+    
+    <pre><code>&lt;svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"&gt;
+  &lt;rect width="1200" height="630" fill="#000000"/&gt;
+  &lt;text x="600" y="315" font-family="Arial" font-size="60" fill="#FFD613" text-anchor="middle"&gt;HukukArama&lt;/text&gt;
+  &lt;text x="600" y="400" font-family="Arial" font-size="40" fill="#FFFFFF" text-anchor="middle"&gt;Yapay Zeka Destekli Hukuk Platformu&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+    
+    <p>You can use a tool like <a href="https://convertio.co/svg-jpg/" target="_blank">Convertio</a> to convert this SVG to JPG.</p>
+  </div>
+  
+  <p><strong>Note:</strong> Once created, make sure to update the Open Graph tags in <code>index.html</code> to point to the correct image path.</p>
+</body>
+</html> 

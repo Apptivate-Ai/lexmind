@@ -407,20 +407,23 @@ const Petition = () => {
             </div>
           </div>
 
-          <div className="form-checkbox-group">
-            <input
-              type="checkbox"
-              id="terms"
-              className="form-checkbox"
-              required
-            />
-            <label htmlFor="terms" className="checkbox-label">
-              Bilgilerin doğruluğunu onaylıyorum ve dilekçenin oluşturulmasını kabul ediyorum.
-            </label>
-          </div>
-
           {error && <div className="error-message">{error}</div>}
           {success && <div className="success-message">{success}</div>}
+
+          <div className="disclaimer-note" style={{
+            backgroundColor: "rgba(255, 214, 19, 0.1)",
+            border: "1px solid rgba(255, 214, 19, 0.3)",
+            borderRadius: "8px",
+            padding: "12px 16px",
+            marginBottom: "20px",
+            fontSize: "14px",
+            color: "#FFFFFF",
+            textAlign: "left",
+            lineHeight: "1.6",
+            fontFamily: "Poppins, sans-serif"
+          }}>
+            <strong style={{ color: "#FFD613", fontFamily: "Poppins, sans-serif", fontWeight: "500" }}>Önemli Not:</strong> Bu dilekçe tamamen yapay zeka tarafından oluşturulmaktadır. Yapay zeka hata yapabilir, yanlış bilgiler sunabilir veya güncel olmayan hukuki bilgiler içerebilir. Oluşturulan dilekçenin hukuki sorumluluğu tamamen kullanıcıya aittir. Kullanmadan önce bir hukuk uzmanına danışmanız önerilir.
+          </div>
 
           <button
             type="submit"

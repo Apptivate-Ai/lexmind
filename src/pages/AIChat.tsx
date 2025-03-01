@@ -4,10 +4,10 @@ import remarkGfm from 'remark-gfm';
 import React from 'react';
 
 const SUGGESTIONS = [
-  "6098 sayılı Borçlar Kanunu'nda kira sözleşmesi ile ilgili maddeleri bul",
-  "İşçinin haksız feshinde tazminat hakları nelerdir?",
-  "Yargıtay'ın mobbing ile ilgili emsal kararlarını göster",
-  "Kiracının tahliyesi için emsal kararları incele"
+  "Kira sözleşmesi yenileme şartları nelerdir?",
+  "İşçinin sözleşmesinin işveren tarafından haksız feshedilmesi halinde tazminat hakkı olur mu?",
+  "Anlaşmalı boşanma için hangi şartlar gereklidir?",
+  "Yurtdışında yaşayanlar için askerlik süreci nasıl olur?"
 ];
 
 interface APIResponse {
@@ -107,20 +107,81 @@ const AIChat = () => {
       margin: '0 auto'
     }}>
       {/* Header */}
-      <div style={{
-        textAlign: 'center',
-        marginBottom: '3rem'
-      }}>
-        <h1 style={{
-          fontSize: '48px',
-          color: '#FFD613',
-          marginBottom: '1rem'
-        }}>Hukuki Asistan</h1>
-        <p style={{
-          fontSize: '20px',
-          color: '#FFFFFF',
-          opacity: 0.8
-        }}>Hukuki sorularınızı yapay zeka destekli asistanımıza sorabilirsiniz</p>
+      <div className="petition-header">
+        <h1>Analiz AI- Olay/Durum Analiz Asistanı</h1>
+        <p>Hukuki olay ya da durumunuzu yapay zeka destekli asistanımıza yazın, Analiz AI sizin için ilgili kanunlar çerçevesinde anında analiz etsin. Durumunuzla ilgili önfikir edinin. Yapay zekamız şimdilik şu kanunlar çerçevesinde analiz yapmaktadır: 
+          <ul style={{
+            listStyleType: 'none',
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '0.5rem',
+            justifyContent: 'center',
+            margin: '1rem 0'
+          }}>
+            <li style={{ 
+              padding: '8px 16px', 
+              background: 'rgba(255, 214, 19, 0.1)', 
+              borderRadius: '20px',
+              border: '1px solid rgba(255, 214, 19, 0.2)'
+            }}>Askeralma Kanunu</li>
+            <li style={{ 
+              padding: '8px 16px', 
+              background: 'rgba(255, 214, 19, 0.1)', 
+              borderRadius: '20px',
+              border: '1px solid rgba(255, 214, 19, 0.2)'
+            }}>İcra ve İflas Kanunu</li>
+            <li style={{ 
+              padding: '8px 16px', 
+              background: 'rgba(255, 214, 19, 0.1)', 
+              borderRadius: '20px',
+              border: '1px solid rgba(255, 214, 19, 0.2)'
+            }}>İdari Yargılama Usulü Kanunu</li>
+            <li style={{ 
+              padding: '8px 16px', 
+              background: 'rgba(255, 214, 19, 0.1)', 
+              borderRadius: '20px',
+              border: '1px solid rgba(255, 214, 19, 0.2)'
+            }}>İş Kanunu</li>
+            <li style={{ 
+              padding: '8px 16px', 
+              background: 'rgba(255, 214, 19, 0.1)', 
+              borderRadius: '20px',
+              border: '1px solid rgba(255, 214, 19, 0.2)'
+            }}>Kamu Görevlileri Sendikaları ve Toplu Sözleşme Kanunu</li>
+            <li style={{ 
+              padding: '8px 16px', 
+              background: 'rgba(255, 214, 19, 0.1)', 
+              borderRadius: '20px',
+              border: '1px solid rgba(255, 214, 19, 0.2)'
+            }}>Sendikalar ve Toplu İş Sözleşmeleri Kanunu</li>
+            <li style={{ 
+              padding: '8px 16px', 
+              background: 'rgba(255, 214, 19, 0.1)', 
+              borderRadius: '20px',
+              border: '1px solid rgba(255, 214, 19, 0.2)'
+            }}>Türk Borçlar Kanunu</li>
+            <li style={{ 
+              padding: '8px 16px', 
+              background: 'rgba(255, 214, 19, 0.1)', 
+              borderRadius: '20px',
+              border: '1px solid rgba(255, 214, 19, 0.2)'
+            }}>Türk Ceza Kanunu</li>
+            <li style={{ 
+              padding: '8px 16px', 
+              background: 'rgba(255, 214, 19, 0.1)', 
+              borderRadius: '20px',
+              border: '1px solid rgba(255, 214, 19, 0.2)'
+            }}>Türk Medeni Kanunu</li>
+            <li style={{ 
+              padding: '8px 16px', 
+              background: 'rgba(255, 214, 19, 0.1)', 
+              borderRadius: '20px',
+              border: '1px solid rgba(255, 214, 19, 0.2)'
+            }}>Türk Ticaret Kanunu</li>
+          </ul></p>
+          <p style={{ textAlign: 'center', fontStyle: 'italic', marginTop: '0.5rem' }}>
+            Diğer Kanunlar ve Mevzuatlar yakın zamanda eklenecektir.
+          </p>
       </div>
 
       {/* Suggestions */}
@@ -140,7 +201,7 @@ const AIChat = () => {
               background: 'none',
               border: '1px solid rgba(255, 255, 255, 0.2)',
               borderRadius: '25px',
-              fontFamily: 'Poppins',
+              fontFamily: 'Poppins, sans-serif',
               fontSize: '16px',
               color: '#FFFFFF',
               cursor: 'pointer',
@@ -174,6 +235,7 @@ const AIChat = () => {
               border: '1px solid rgba(255, 214, 19, 0.3)',
               background: 'rgba(255, 255, 255, 0.05)',
               color: '#FFFFFF',
+              fontFamily: 'Poppins, sans-serif',
               fontSize: '16px'
             }}
           />
@@ -186,7 +248,9 @@ const AIChat = () => {
               border: 'none',
               background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
               color: '#000000',
+              fontFamily: 'Poppins, sans-serif',
               fontSize: '16px',
+              fontWeight: '500',
               cursor: 'pointer',
               transition: 'all 0.3s ease'
             }}
@@ -196,22 +260,42 @@ const AIChat = () => {
         </div>
       </form>
 
+      <div className="disclaimer-note" style={{
+        backgroundColor: "rgba(255, 214, 19, 0.1)",
+        border: "1px solid rgba(255, 214, 19, 0.3)",
+        borderRadius: "8px",
+        padding: "12px 16px",
+        marginBottom: "2rem",
+        fontSize: "14px",
+        color: "#FFFFFF",
+        textAlign: "left",
+        lineHeight: "1.6",
+        maxWidth: "800px",
+        margin: "0 auto 3rem auto",
+        fontFamily: "Poppins, sans-serif"
+      }}>
+        <strong style={{ color: "#FFD613", fontFamily: "Poppins, sans-serif", fontWeight: "500" }}>Önemli Not:</strong> Hukuki Asistan tamamen yapay zeka tarafından desteklenmektedir. Yapay zeka hata yapabilir, yanlış bilgiler sunabilir veya güncel olmayan hukuki bilgiler içerebilir. Verilen yanıtların hukuki sorumluluğu tamamen kullanıcıya aittir. Önemli hukuki konularda bir avukata danışmanız önerilir.
+      </div>
+
       {/* Response */}
       {response && (
         <div style={{
           background: 'rgba(255, 255, 255, 0.05)',
           borderRadius: '20px',
           padding: '2rem',
-          marginTop: '2rem'
+          marginTop: '2rem',
+          maxWidth: '1000px',
+          margin: '0 auto',
+          border: '1px solid rgba(255, 255, 255, 0.1)'
         }}>
           <ReactMarkdown 
             remarkPlugins={[remarkGfm]}
             components={{
-              h1: ({node, ...props}) => <h1 style={{color: '#FFD613', marginTop: '2rem', marginBottom: '1rem'}} {...props} />,
-              h2: ({node, ...props}) => <h2 style={{color: '#FFD613', marginTop: '2rem', marginBottom: '1rem'}} {...props} />,
-              h3: ({node, ...props}) => <h3 style={{color: '#FFD613', marginTop: '1.5rem', marginBottom: '0.75rem'}} {...props} />,
-              h4: ({node, ...props}) => <h4 style={{color: '#FFD613', marginTop: '1.25rem', marginBottom: '0.5rem'}} {...props} />,
-              h5: ({node, ...props}) => <h5 style={{color: '#FFD613', marginTop: '1rem', marginBottom: '0.5rem'}} {...props} />,
+              h1: ({node, ...props}) => <h1 style={{color: '#FFD613', marginTop: '2rem', marginBottom: '1rem', fontFamily: 'Poppins, sans-serif', fontWeight: '600'}} {...props} />,
+              h2: ({node, ...props}) => <h2 style={{color: '#FFD613', marginTop: '2rem', marginBottom: '1rem', fontFamily: 'Poppins, sans-serif', fontWeight: '600'}} {...props} />,
+              h3: ({node, ...props}) => <h3 style={{color: '#FFD613', marginTop: '1.5rem', marginBottom: '0.75rem', fontFamily: 'Poppins, sans-serif', fontWeight: '600'}} {...props} />,
+              h4: ({node, ...props}) => <h4 style={{color: '#FFD613', marginTop: '1.25rem', marginBottom: '0.5rem', fontFamily: 'Poppins, sans-serif', fontWeight: '600'}} {...props} />,
+              h5: ({node, ...props}) => <h5 style={{color: '#FFD613', marginTop: '1rem', marginBottom: '0.5rem', fontFamily: 'Poppins, sans-serif', fontWeight: '600'}} {...props} />,
               p: ({node, children, ...props}) => {
                 // Check if children contains block elements (unlikely with markdown but possible)
                 const hasBlockElements = React.Children.toArray(children).some(
@@ -227,13 +311,13 @@ const AIChat = () => {
                 }
                 
                 // Otherwise render normal paragraph
-                return <p style={{color: '#FFFFFF', marginBottom: '1rem', lineHeight: '1.6'}} {...props}>{children}</p>;
+                return <p style={{color: '#FFFFFF', marginBottom: '1rem', lineHeight: '1.6', fontFamily: 'Poppins, sans-serif'}} {...props}>{children}</p>;
               },
-              ul: ({node, ...props}) => <ul style={{color: '#FFFFFF', marginBottom: '1rem', paddingLeft: '1.5rem'}} {...props} />,
-              ol: ({node, ...props}) => <ol style={{color: '#FFFFFF', marginBottom: '1rem', paddingLeft: '1.5rem'}} {...props} />,
-              li: ({node, ...props}) => <li style={{color: '#FFFFFF', marginBottom: '0.5rem'}} {...props} />,
-              em: ({node, ...props}) => <em style={{color: '#FFD613', fontStyle: 'normal'}} {...props} />,
-              strong: ({node, ...props}) => <strong style={{color: '#FFD613'}} {...props} />,
+              ul: ({node, ...props}) => <ul style={{color: '#FFFFFF', marginBottom: '1rem', paddingLeft: '1.5rem', fontFamily: 'Poppins, sans-serif'}} {...props} />,
+              ol: ({node, ...props}) => <ol style={{color: '#FFFFFF', marginBottom: '1rem', paddingLeft: '1.5rem', fontFamily: 'Poppins, sans-serif'}} {...props} />,
+              li: ({node, ...props}) => <li style={{color: '#FFFFFF', marginBottom: '0.5rem', fontFamily: 'Poppins, sans-serif'}} {...props} />,
+              em: ({node, ...props}) => <em style={{color: '#FFD613', fontStyle: 'normal', fontFamily: 'Poppins, sans-serif'}} {...props} />,
+              strong: ({node, ...props}) => <strong style={{color: '#FFD613', fontFamily: 'Poppins, sans-serif'}} {...props} />,
             }}
           >
             {response}

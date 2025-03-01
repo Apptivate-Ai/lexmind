@@ -3,7 +3,15 @@
   <!-- Ana Sayfa -->
   <url>
     <loc>https://hukukarama.com/</loc>
-    <lastmod>2024-02-26</lastmod>
+    <lastmod>2024-03-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- AI Chat Sayfası -->
+  <url>
+    <loc>https://hukukarama.com/chat</loc>
+    <lastmod>2024-03-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -11,7 +19,7 @@
   <!-- Kanun Arama Sayfası -->
   <url>
     <loc>https://hukukarama.com/search</loc>
-    <lastmod>2024-02-26</lastmod>
+    <lastmod>2024-03-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -19,8 +27,24 @@
   <!-- Dilekçe Oluşturma Sayfası -->
   <url>
     <loc>https://hukukarama.com/petition</loc>
-    <lastmod>2024-02-26</lastmod>
+    <lastmod>2024-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+
+  <!-- İletişim Sayfası -->
+  <url>
+    <loc>https://hukukarama.com/contact</loc>
+    <lastmod>2024-03-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Kullanım Koşulları ve Gizlilik Sayfası -->
+  <url>
+    <loc>https://hukukarama.com/terms</loc>
+    <lastmod>2024-03-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
 </urlset> 

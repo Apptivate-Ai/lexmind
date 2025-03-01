@@ -4,6 +4,7 @@ import './App.css';
 import './styles/AIChat.css';
 import './styles/Search.css';
 import './styles/Petition.css';
+import './styles/Terms.css';
 import heroImage from './assets/hero_image.png';
 import logo from './assets/hukuk_arama_logo.png';
 
@@ -11,6 +12,7 @@ import logo from './assets/hukuk_arama_logo.png';
 import AIChat from './pages/AIChat';
 import Search from './pages/Search';
 import Petition from './pages/Petition';
+import Terms from './pages/Terms';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,9 +29,9 @@ function App() {
     <Router>
       <div className="app">
         <header className="header">
-          <div className="logo" style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-            <Link to="/" style={{ display: 'flex', alignItems: 'center' }} onClick={closeMenu}>
-              <img src={logo} alt="Hukuk Arama Logo" style={{ height: '250px', width: 'auto' }} />
+          <div className="logo">
+            <Link to="/" onClick={closeMenu}>
+              <img src={logo} alt="Hukuk Arama Logo" />
             </Link>
           </div>
           
@@ -57,374 +59,118 @@ function App() {
             <>
               <section className="hero">
                 <div className="hero-content">
-                  <h1 style={{
-                    fontSize: '48px',
-                    fontWeight: '600',
-                    color: '#FFD613',
-                    marginBottom: '24px',
-                    maxWidth: '800px',
-                    lineHeight: '1.2'
-                  }}>
-                    Yapay Zeka Destekli Hukuk Analizi ve Arama Platformu
+                  <h1 className="hero-title">
+                    Yapay Zeka Destekli Hukuk Süreç Destek Platformu
                   </h1>
-                  <p style={{
-                    fontSize: '24px',
-                    color: '#fff',
-                    marginBottom: '20px',
-                    maxWidth: '1020px',
-                    textAlign: 'left'
-                  }}>
-                    Hukuki sorunlarınız için yapay zeka desteği ile çözüm bulun
+                  <p className="hero-description">
+                    Hukuki süreçlerinizde yapay zeka desteğiyle kolaylık sağlayın:
                   </p>
-                  <ul style={{
-                    listStyle: 'none',
-                    padding: 0,
-                    margin: 0,
-                    marginBottom: '40px'
-                  }}>
-                    <li style={{
-                      marginBottom: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '15px',
-                      background: 'rgba(255, 214, 19, 0.1)',
-                      padding: '12px 16px',
-                      borderRadius: '8px',
-                      transition: 'all 0.3s ease'
-                    }}>
-                      <div style={{
-                        minWidth: '32px',
-                        height: '32px',
-                        background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
-                        borderRadius: '6px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '18px'
-                      }}>
+                  <ul className="feature-list">
+                    <li className="feature-item">
+                      <div className="feature-item-icon">
                         ⚖️
                       </div>
-                      İstediğiniz olay ya da durum ile alakalı kanunlara göre yapay zeka analizi alabilirsiniz
+                      Hukuki olay ya da durum ile ilgili belirli kanunlar çerçevesinde yapay zeka analizi
                     </li>
-                    <li style={{
-                      marginBottom: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '15px',
-                      background: 'rgba(255, 214, 19, 0.1)',
-                      padding: '12px 16px',
-                      borderRadius: '8px',
-                      transition: 'all 0.3s ease'
-                    }}>
-                      <div style={{
-                        minWidth: '32px',
-                        height: '32px',
-                        background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
-                        borderRadius: '6px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '18px'
-                      }}>
+                    <li className="feature-item">
+                      <div className="feature-item-icon">
                         🔍
                       </div>
-                      Olay ya da durumla ilgili yapay zeka destekli kanun araması yapabilirsiniz
+                      Olay ya da durumla ilgili yapay zeka destekli kanun araması
                     </li>
-                    <li style={{
-                      marginBottom: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '15px',
-                      background: 'rgba(255, 214, 19, 0.1)',
-                      padding: '12px 16px',
-                      borderRadius: '8px',
-                      transition: 'all 0.3s ease'
-                    }}>
-                      <div style={{
-                        minWidth: '32px',
-                        height: '32px',
-                        background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
-                        borderRadius: '6px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '18px'
-                      }}>
+                    <li className="feature-item">
+                      <div className="feature-item-icon">
                         📚
                       </div>
-                      Doğrudan kanun araması yapabilirsiniz
+                      Doğrudan kanun araması
                     </li>
-                    <li style={{
-                      marginBottom: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '15px',
-                      background: 'rgba(255, 214, 19, 0.1)',
-                      padding: '12px 16px',
-                      borderRadius: '8px',
-                      transition: 'all 0.3s ease'
-                    }}>
-                      <div style={{
-                        minWidth: '32px',
-                        height: '32px',
-                        background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
-                        borderRadius: '6px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '18px'
-                      }}>
+                    <li className="feature-item">
+                      <div className="feature-item-icon">
                         📝
                       </div>
-                      Durumunuza özel yapay zekadan dilekçe oluşturabilirsiniz
+                      Hukuki Olay ya da durumunuza özel yapay zekadan dilekçe oluşturma
                     </li>
-                    <li style={{
-                      marginBottom: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '15px',
-                      background: 'rgba(255, 214, 19, 0.1)',
-                      padding: '12px 16px',
-                      borderRadius: '8px',
-                      transition: 'all 0.3s ease'
-                    }}>
-                      <div style={{
-                        minWidth: '32px',
-                        height: '32px',
-                        background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
-                        borderRadius: '6px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '18px'
-                      }}>
+                    <li className="feature-item">
+                      <div className="feature-item-icon">
                         🔎
                       </div>
-                      Olayınızla ilgili emsal kararları(içtihatları) yapay zeka destekli aramayla ulaşabilirsiniz (Çok Yakında)
+                      Hukuki olay ya da durumla ilgili emsal kararları(içtihatları) yapay zeka destekli arama (Çok Yakında)
                     </li>
-                    <li style={{
-                      marginBottom: '0',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '15px',
-                      background: 'rgba(255, 214, 19, 0.1)',
-                      padding: '12px 16px',
-                      borderRadius: '8px',
-                      transition: 'all 0.3s ease'
-                    }}>
-                      <div style={{
-                        minWidth: '32px',
-                        height: '32px',
-                        background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
-                        borderRadius: '6px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '18px'
-                      }}>
+                    <li className="feature-item">
+                      <div className="feature-item-icon">
                         📊
                       </div>
-                      Olay ya da durum ile alakalı Emsal karara(içtihata) göre yapay zeka değerlendirmesi alabilirsiniz (Çok yakında)
+                      Hukuki olay ya da durum ile alakalı Emsal karara(içtihata) göre yapay zeka değerlendirmesi (Çok yakında)
                     </li>
                   </ul>
-                  <div style={{
-                    display: 'flex',
-                    gap: '20px',
-                    justifyContent: 'flex-start',
-                    marginTop: '20px'
-                  }}>
+                  <div className="hero-buttons">
                     <Link to="/chat" className="primary-btn">Yapay Zekaya Olay/Durum Analizi Yaptır</Link>
                     <Link to="/search" className="secondary-btn">Olay/Durumla İlgili Kanun Ara/Doğrudan Kanun Ara</Link>
                   </div>
                 </div>
                 <div className="hero-image">
-                  <img src={heroImage} alt="LexMind Hero" style={{
-                    maxWidth: '100%',
-                    height: 'auto',
-                    objectFit: 'contain'
-                  }} />
+                  <img src={heroImage} alt="LexMind Hero" />
                 </div>
               </section>
 
               <section className="features">
                 <h2>Platform Özellikleri</h2>
-                <div className="features-grid" style={{ 
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(3, 1fr)',
-                  gap: '24px',
-                  maxWidth: '1200px',
-                  margin: '0 auto',
-                  padding: '20px'
-                }}>
-                  <Link to="/chat" className="feature-card" style={{
-                    cursor: 'pointer',
-                    textDecoration: 'none',
-                    color: 'inherit',
-                    background: 'rgba(255, 214, 19, 0.05)',
-                    padding: '24px',
-                    borderRadius: '16px',
-                    border: '1px solid rgba(255, 214, 19, 0.1)',
-                    transition: 'all 0.3s ease'
-                  }}>
+                <div className="features-grid">
+                  <Link to="/chat" className="feature-card">
                     <div className="feature-icon">⚖️</div>
                     <h3>Yapay Zeka Analizi</h3>
-                    <p>Olay ve durumlarınızı kanunlar çerçevesinde yapay zeka ile analiz edin. Hukuki değerlendirmeleri anında alın.</p>
+                    <p>Olay ve durumlarınızı kanunlar çerçevesinde yapay zeka ile analiz edin. Hukuki durumunuzla ilgili anında fikir alın.</p>
                   </Link>
                   
-                  <Link to="/search" className="feature-card" style={{
-                    cursor: 'pointer',
-                    textDecoration: 'none',
-                    color: 'inherit',
-                    background: 'rgba(255, 214, 19, 0.05)',
-                    padding: '24px',
-                    borderRadius: '16px',
-                    border: '1px solid rgba(255, 214, 19, 0.1)',
-                    transition: 'all 0.3s ease'
-                  }}>
+                  <Link to="/search" className="feature-card">
                     <div className="feature-icon">🔍</div>
                     <h3>Akıllı Kanun Araması</h3>
-                    <p>Yapay zeka destekli kanun araması ile konunuzla ilgili tüm yasal düzenlemelere hızlıca ulaşın.</p>
+                    <p>Yapay zeka destekli kanun araması ile konunuzla ilgili kanunlara hızlıca ulaşın.</p>
                   </Link>
 
-                  <Link to="/search" className="feature-card" style={{
-                    cursor: 'pointer',
-                    textDecoration: 'none',
-                    color: 'inherit',
-                    background: 'rgba(255, 214, 19, 0.05)',
-                    padding: '24px',
-                    borderRadius: '16px',
-                    border: '1px solid rgba(255, 214, 19, 0.1)',
-                    transition: 'all 0.3s ease'
-                  }}>
+                  <Link to="/search" className="feature-card">
                     <div className="feature-icon">📚</div>
                     <h3>Doğrudan Kanun Arama</h3>
-                    <p>Tüm kanun ve mevzuat içeriklerinde arama yapın. İhtiyacınız olan yasal düzenlemeleri kolayca bulun.</p>
+                    <p>Kanun adı, madde numarası veya anahtar kelimelerle arama yaparak spesifik kanun maddelerini bulun.</p>
                   </Link>
 
-                  <Link to="/petition" className="feature-card" style={{
-                    cursor: 'pointer',
-                    textDecoration: 'none',
-                    color: 'inherit',
-                    background: 'rgba(255, 214, 19, 0.05)',
-                    padding: '24px',
-                    borderRadius: '16px',
-                    border: '1px solid rgba(255, 214, 19, 0.1)',
-                    transition: 'all 0.3s ease'
-                  }}>
+                  <Link to="/petition" className="feature-card">
                     <div className="feature-icon">📝</div>
-                    <h3>Dilekçe Oluşturma</h3>
-                    <p>Yapay zeka ile durumunuza özel profesyonel dilekçeler oluşturun. Hukuki taleplerinizi etkili bir şekilde ifade edin.</p>
+                    <h3>Dilekçe Oluşturucu</h3>
+                    <p>Durumunuza uygun, kanunlara uygun profesyonel dilekçeleri yapay zeka ile hızlıca oluşturun.</p>
                   </Link>
 
-                  <div className="feature-card" style={{
-                    color: 'inherit',
-                    background: 'rgba(255, 214, 19, 0.05)',
-                    padding: '24px',
-                    borderRadius: '16px',
-                    border: '1px solid rgba(255, 214, 19, 0.1)',
-                    opacity: '0.8',
-                    position: 'relative'
-                  }}>
-                    <div style={{
-                      position: 'absolute',
-                      top: '10px',
-                      right: '10px',
-                      background: '#FFD613',
-                      color: '#000',
-                      padding: '4px 8px',
-                      borderRadius: '12px',
-                      fontSize: '12px'
-                    }}>Çok Yakında</div>
+                  <Link to="/chat" className="feature-card">
                     <div className="feature-icon">🔎</div>
-                    <h3>Emsal Karar Arama</h3>
-                    <p>Yapay zeka destekli içtihat araması ile konunuzla ilgili tüm emsal kararlara kolayca ulaşın.</p>
-                  </div>
+                    <h3>Emsal Karar Araması</h3>
+                    <p>Benzer davalar için emsal kararları bulun ve davanızı güçlendirin. (Çok Yakında)</p>
+                  </Link>
 
-                  <div className="feature-card" style={{
-                    color: 'inherit',
-                    background: 'rgba(255, 214, 19, 0.05)',
-                    padding: '24px',
-                    borderRadius: '16px',
-                    border: '1px solid rgba(255, 214, 19, 0.1)',
-                    opacity: '0.8',
-                    position: 'relative'
-                  }}>
-                    <div style={{
-                      position: 'absolute',
-                      top: '10px',
-                      right: '10px',
-                      background: '#FFD613',
-                      color: '#000',
-                      padding: '4px 8px',
-                      borderRadius: '12px',
-                      fontSize: '12px'
-                    }}>Çok Yakında</div>
+                  <Link to="/chat" className="feature-card">
                     <div className="feature-icon">📊</div>
-                    <h3>İçtihat Analizi</h3>
-                    <p>Olay ve durumlarınızı emsal kararlar çerçevesinde yapay zeka ile analiz edin. Benzer davalardaki sonuçları inceleyin.</p>
-                  </div>
+                    <h3>Emsal Değerlendirmesi</h3>
+                    <p>Yapay zeka ile emsal kararlara göre davanızın başarı olasılığını değerlendirin. (Çok Yakında)</p>
+                  </Link>
                 </div>
               </section>
 
-              <section style={{
-                background: 'linear-gradient(100.61deg, rgba(255, 214, 19, 0.1) 17.65%, rgba(142, 120, 13, 0.1) 57.89%)',
-                padding: '60px 20px',
-                textAlign: 'center',
-                borderRadius: '24px',
-                margin: '40px auto',
-                maxWidth: '1200px'
-              }}>
-                <div style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '24px'
-                }}>
-                  <div style={{
-                    background: '#FFD613',
-                    color: '#000',
-                    padding: '8px 16px',
-                    borderRadius: '20px',
-                    fontSize: '14px',
-                    fontWeight: '500'
-                  }}>
+              <section className="promo-section">
+                <div className="promo-container">
+                  <div className="promo-badge">
                     Çok Yakında
                   </div>
-                  <h2 style={{
-                    fontSize: '36px',
-                    color: '#FFD613',
-                    marginBottom: '16px'
-                  }}>
-                    Hukukçu Arama Sistemi
+                  <h2 className="promo-title">
+                    Avukat Arama Sistemi
                   </h2>
-                  <p style={{
-                    fontSize: '20px',
-                    color: '#FFFFFF',
-                    maxWidth: '800px',
-                    marginBottom: '32px'
-                  }}>
-                    Alanında uzman hukukçulara kolayca ulaşabileceğiniz sistemimiz için ön kayıt alımlarına başladık.
+                  <p className="promo-description">
+                    Alanında uzman Avukatlara kolayca ulaşabileceğiniz sistemimize Avukat ön kayıt alımlarına başladık. Siz de hemen kayıt olun sistemde yerinizi alın!
                   </p>
                   <Link 
                     to="/contact" 
-                    style={{
-                      background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)',
-                      padding: '16px 32px',
-                      borderRadius: '30px',
-                      color: '#000000',
-                      textDecoration: 'none',
-                      fontSize: '18px',
-                      fontWeight: '500',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      transition: 'transform 0.3s ease'
-                    }}
-                    onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                    onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                    className="promo-button"
                   >
-                    Ön Kayıt İçin İletişime Geç
-                    <span style={{ fontSize: '24px' }}>→</span>
+                    Ön Kayıt İçin İletişime Geçin
+                    <span className="promo-button-arrow">→</span>
                   </Link>
                 </div>
               </section>
@@ -433,7 +179,7 @@ function App() {
                 <div className="footer-content">
                   <div className="footer-section">
                     <h3>Hukuk Arama</h3>
-                    <p>Yapay zeka destekli hukuki analiz ve arama platformu.</p>
+                    <p>Yapay zeka destekli hukuki süreç destek platformu: Yapay zeka destekli olay/durum analizi, kanun/emsal karar arama ve yapay zeka destekli dilekçe oluşturma.</p>
                   </div>
                   <div className="footer-section">
                     <h3>Hızlı Linkler</h3>
@@ -442,16 +188,17 @@ function App() {
                     <Link to="/search">Kanun Ara</Link>
                     <Link to="/petition">Dilekçe Oluştur</Link>
                     <Link to="/contact">İletişim</Link>
+                    <Link to="/terms" style={{ color: '#FFFFFF' }}>Kullanım Koşulları ve Gizlilik</Link>
                   </div>
                   <div className="footer-section">
                     <h3>İletişim</h3>
-                    <p>Email: info@lexmind.com</p>
-                    <p>Tel: +90 (212) XXX XX XX</p>
-                    <p>Adres: Maslak, İstanbul</p>
+                    <p>Email: hukukarama@lysmind.com</p>
+                    <p>Tel: +90 (507) 683 78 50</p>
+                    <p><small>© {new Date().getFullYear()} LysMind. Tüm sorumluluklar kullanıcıya aittir.</small></p>
                   </div>
                 </div>
                 <div className="footer-bottom">
-                  <p>&copy; {new Date().getFullYear()} LexMind. Tüm hakları saklıdır.</p>
+                  <p>&copy; {new Date().getFullYear()} LysMind. Tüm hakları saklıdır. <Link to="/terms" style={{ color: '#FFFFFF' }}>Kullanım Koşulları ve Gizlilik</Link></p>
                 </div>
               </footer>
             </>
@@ -459,31 +206,237 @@ function App() {
           <Route path="/chat" element={<AIChat />} />
           <Route path="/search" element={<Search />} />
           <Route path="/petition" element={<Petition />} />
+          <Route path="/terms" element={<Terms />} />
           <Route path="/contact" element={
             <section className="contact-page">
               <div className="contact-header">
                 <h1>İletişime Geçin</h1>
-                <p>Hukuki süreçlerinizi yapay zeka ile optimize etmek için bizimle iletişime geçin.</p>
+                <p>İşbirlikleri ve avukat arama sistemine kayıt için bizimle iletişime geçmekten çekinmeyin. Size yardımcı olmaktan mutluluk duyarız.</p>
               </div>
+              
+              <div className="registration-container" style={{ 
+                maxWidth: '800px', 
+                margin: '0 auto 40px auto',
+                background: 'linear-gradient(100.61deg, rgba(255, 214, 19, 0.1) 17.65%, rgba(142, 120, 13, 0.1) 57.89%)',
+                borderRadius: '20px',
+                padding: '30px',
+                border: '1px solid rgba(255, 214, 19, 0.2)'
+              }}>
+                <h2 style={{ 
+                  textAlign: 'center', 
+                  color: '#FFD613', 
+                  marginBottom: '25px',
+                  fontSize: '28px'
+                }}>Avukat Arama Sistemine Kayıt</h2>
+                
+                <div style={{ 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  gap: '20px'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
+                    <div style={{ 
+                      minWidth: '36px', 
+                      height: '36px', 
+                      borderRadius: '50%', 
+                      background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      color: '#000',
+                      fontWeight: 'bold'
+                    }}>1</div>
+                    <div>
+                      <p style={{ fontSize: '17px' }}>E-posta adresimize mesaj gönderin.</p>
+                    </div>
+                  </div>
+                  
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
+                    <div style={{ 
+                      minWidth: '36px', 
+                      height: '36px', 
+                      borderRadius: '50%', 
+                      background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      color: '#000',
+                      fontWeight: 'bold'
+                    }}>2</div>
+                    <div>
+                      <p style={{ fontSize: '17px' }}>Konu kısmına "<strong>Avukat Arama Sistemi Kaydı</strong>" yazın.</p>
+                    </div>
+                  </div>
+                  
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
+                    <div style={{ 
+                      minWidth: '36px', 
+                      height: '36px', 
+                      borderRadius: '50%', 
+                      background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      color: '#000',
+                      fontWeight: 'bold'
+                    }}>3</div>
+                    <div>
+                      <p style={{ fontSize: '17px' }}>Mesajınızda ad-soyad, baro sicil numarası ve uzmanlık alanlarınızı belirtin.</p>
+                    </div>
+                  </div>
+                  
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
+                    <div style={{ 
+                      minWidth: '36px', 
+                      height: '36px', 
+                      borderRadius: '50%', 
+                      background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      color: '#000',
+                      fontWeight: 'bold'
+                    }}>4</div>
+                    <div>
+                      <p style={{ fontSize: '17px' }}>CV'nizi ve referanslarınızı (varsa) ekleyin.</p>
+                    </div>
+                  </div>
+                  
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
+                    <div style={{ 
+                      minWidth: '36px', 
+                      height: '36px', 
+                      borderRadius: '50%', 
+                      background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      color: '#000',
+                      fontWeight: 'bold'
+                    }}>5</div>
+                    <div>
+                      <p style={{ fontSize: '17px' }}>48 saat içinde sizinle iletişime geçeceğiz.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="registration-container" style={{ 
+                maxWidth: '800px', 
+                margin: '0 auto 40px auto',
+                background: 'linear-gradient(100.61deg, rgba(255, 214, 19, 0.1) 17.65%, rgba(142, 120, 13, 0.1) 57.89%)',
+                borderRadius: '20px',
+                padding: '30px',
+                border: '1px solid rgba(255, 214, 19, 0.2)'
+              }}>
+                <h2 style={{ 
+                  textAlign: 'center', 
+                  color: '#FFD613', 
+                  marginBottom: '25px',
+                  fontSize: '28px'
+                }}>Reklam ve İşbirliği</h2>
+                
+                <div style={{ 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  gap: '20px'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
+                    <div style={{ 
+                      minWidth: '36px', 
+                      height: '36px', 
+                      borderRadius: '50%', 
+                      background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      color: '#000',
+                      fontWeight: 'bold'
+                    }}>1</div>
+                    <div>
+                      <p style={{ fontSize: '17px' }}>E-posta adresimize mesaj gönderin.</p>
+                    </div>
+                  </div>
+                  
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
+                    <div style={{ 
+                      minWidth: '36px', 
+                      height: '36px', 
+                      borderRadius: '50%', 
+                      background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      color: '#000',
+                      fontWeight: 'bold'
+                    }}>2</div>
+                    <div>
+                      <p style={{ fontSize: '17px' }}>Konu kısmına "<strong>Reklam/İşbirliği Talebi</strong>" yazın.</p>
+                    </div>
+                  </div>
+                  
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
+                    <div style={{ 
+                      minWidth: '36px', 
+                      height: '36px', 
+                      borderRadius: '50%', 
+                      background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      color: '#000',
+                      fontWeight: 'bold'
+                    }}>3</div>
+                    <div>
+                      <p style={{ fontSize: '17px' }}>Kurumunuz ve işbirliği öneriniz hakkında kısa bilgi verin.</p>
+                    </div>
+                  </div>
+                  
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
+                    <div style={{ 
+                      minWidth: '36px', 
+                      height: '36px', 
+                      borderRadius: '50%', 
+                      background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      color: '#000',
+                      fontWeight: 'bold'
+                    }}>4</div>
+                    <div>
+                      <p style={{ fontSize: '17px' }}>Telefon numaranızı ve müsait olduğunuz görüşme saatlerini belirtin.</p>
+                    </div>
+                  </div>
+                  
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
+                    <div style={{ 
+                      minWidth: '36px', 
+                      height: '36px', 
+                      borderRadius: '50%', 
+                      background: 'linear-gradient(100.61deg, #FFD613 17.65%, #8E780D 57.89%)', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      color: '#000',
+                      fontWeight: 'bold'
+                    }}>5</div>
+                    <div>
+                      <p style={{ fontSize: '17px' }}>Ekibimiz en kısa sürede sizinle iletişime geçecektir.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
               <div className="contact-container">
-                <form className="contact-form">
-                  <input type="text" placeholder="Adınız Soyadınız" required />
-                  <input type="email" placeholder="E-posta Adresiniz" required />
-                  <textarea placeholder="Mesajınız" required></textarea>
-                  <button type="submit" className="submit-button">Gönder</button>
-                </form>
                 <div className="contact-info">
                   <div className="info-item">
                     <h3>E-posta</h3>
-                    <p>info@lexmind.com</p>
+                    <p>hukukarama@lysmind.com</p>
                   </div>
                   <div className="info-item">
                     <h3>Telefon</h3>
-                    <p>+90 (212) XXX XX XX</p>
-                  </div>
-                  <div className="info-item">
-                    <h3>Adres</h3>
-                    <p>Maslak, İstanbul</p>
+                    <p>+90 (507) 683 78 50</p>
                   </div>
                 </div>
               </div>
